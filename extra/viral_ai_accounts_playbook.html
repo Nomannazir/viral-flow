@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Viral AI Video Playbook — Account Analysis & Niche Guides</title>
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f7f6f2;
+  --s1:#efede7;
+  --s2:#e8e5dd;
+  --s3:#ddd9cf;
+  --ink:#1a1814;
+  --ink2:#2e2b26;
+  --ink3:#46433d;
+  --muted:#7a7570;
+  --faint:#b0aca5;
+  --rule:#d4cfc7;
+  --rule2:#c4bfb7;
+  --red:#d94f3d;
+  --red-d:#f9e8e6;
+  --green:#2d7a4f;
+  --green-d:#e6f2ec;
+  --blue:#2c5fbd;
+  --blue-d:#e6ecf8;
+  --amber:#c97c1a;
+  --amber-d:#fdf3e3;
+  --violet:#6b3fa0;
+  --violet-d:#f0eaf8;
+  --teal:#1a7a72;
+  --teal-d:#e5f2f1;
+  --ff-head:'Clash Display',sans-serif;
+  --ff-body:'Plus Jakarta Sans',sans-serif;
+  --ff-mono:'IBM Plex Mono',monospace;
+  --r:6px;--r2:10px;--r3:16px;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--ff-body);font-size:13.5px;line-height:1.65;overflow-x:hidden}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-thumb{background:var(--rule2);border-radius:2px}
+
+/* ══ HERO ══ */
+.hero{
+  background:var(--ink);color:#f0ede6;
+  padding:52px 52px 44px;
+  position:relative;overflow:hidden;
+}
+.hero::after{
+  content:'';position:absolute;
+  right:-80px;top:-80px;
+  width:400px;height:400px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.03),transparent 70%);
+  pointer-events:none;
+}
+.hero-eyebrow{
+  font-family:var(--ff-mono);font-size:10px;letter-spacing:.14em;
+  color:var(--faint);text-transform:uppercase;margin-bottom:18px;
+  display:flex;align-items:center;gap:10px;
+}
+.hero-eyebrow::before{content:'';width:24px;height:1px;background:var(--faint)}
+.hero h1{
+  font-family:var(--ff-head);
+  font-size:clamp(44px,6vw,80px);
+  font-weight:700;line-height:.95;
+  letter-spacing:-.02em;color:#f0ede6;
+  margin-bottom:20px;
+}
+.hero h1 em{color:#c9f135;font-style:normal}
+.hero-desc{font-size:15px;color:#9a9690;max-width:580px;line-height:1.7;margin-bottom:32px}
+.hero-tags{display:flex;gap:8px;flex-wrap:wrap}
+.hero-tag{
+  font-family:var(--ff-mono);font-size:10px;
+  padding:5px 12px;border-radius:2px;
+  border:1px solid rgba(255,255,255,.1);
+  color:#b0aca5;letter-spacing:.05em;
+}
+.hero-tag.live{border-color:rgba(201,241,53,.3);color:#c9f135}
+
+/* ══ PAGE ══ */
+.page{max-width:1240px;margin:0 auto;padding:0 48px 80px}
+
+/* ══ SECTION ══ */
+.sec{margin-top:60px}
+.sec-head{
+  display:grid;grid-template-columns:auto 1fr auto;
+  align-items:end;gap:16px;
+  margin-bottom:28px;
+  padding-bottom:14px;
+  border-bottom:1.5px solid var(--ink);
+}
+.sec-n{font-family:var(--ff-head);font-size:13px;color:var(--muted);letter-spacing:.06em}
+.sec-title{font-family:var(--ff-head);font-size:26px;font-weight:700;letter-spacing:-.02em}
+.sec-tag{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-spacing:.1em;padding-bottom:2px}
+
+/* ══ ACCOUNT CARDS ══ */
+.acc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.acc-card{
+  background:#fff;border:1.5px solid var(--rule);border-radius:var(--r3);
+  overflow:hidden;transition:all .2s;
+}
+.acc-card:hover{border-color:var(--rule2);box-shadow:0 4px 20px rgba(0,0,0,.06)}
+.acc-top{padding:20px 20px 16px;border-bottom:1px solid var(--s2)}
+.acc-handle{font-family:var(--ff-mono);font-size:11px;color:var(--muted);margin-bottom:4px}
+.acc-name{font-family:var(--ff-head);font-size:18px;font-weight:700;margin-bottom:10px}
+.acc-desc{font-size:12px;color:var(--ink3);line-height:1.6}
+.acc-niche-tag{
+  display:inline-block;margin-top:10px;
+  font-family:var(--ff-mono);font-size:9px;letter-spacing:.07em;
+  padding:3px 9px;border-radius:3px;
+}
+.acc-body{padding:16px 20px}
+.acc-stat-row{display:flex;gap:10px;margin-bottom:14px}
+.acc-stat{flex:1;background:var(--s1);border-radius:var(--r);padding:9px 10px}
+.acc-stat-val{font-family:var(--ff-head);font-size:16px;font-weight:700;line-height:1}
+.acc-stat-label{font-size:9px;color:var(--muted);font-family:var(--ff-mono);margin-top:3px;letter-spacing:.04em}
+.acc-section-label{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:7px}
+.acc-list{list-style:none;display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.acc-list li{
+  font-size:11.5px;color:var(--ink3);display:flex;gap:8px;align-items:flex-start;
+  padding:6px 8px;background:var(--s1);border-radius:var(--r);
+}
+.acc-list li::before{content:'→';color:var(--muted);flex-shrink:0;margin-top:1px}
+.acc-tools{display:flex;gap:5px;flex-wrap:wrap}
+.tool-chip{
+  font-family:var(--ff-mono);font-size:9px;
+  padding:3px 8px;border-radius:3px;
+  border:1px solid var(--rule);background:var(--bg);
+  color:var(--muted);
+}
+
+/* ══ VIDEO STYLE BREAKDOWN ══ */
+.style-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.style-card{
+  background:#fff;border:1.5px solid var(--rule);border-radius:var(--r2);
+  padding:18px 20px;
+}
+.style-num{font-family:var(--ff-head);font-size:40px;color:var(--s3);line-height:1;margin-bottom:6px}
+.style-name{font-family:var(--ff-head);font-size:16px;font-weight:700;margin-bottom:6px}
+.style-platforms{display:flex;gap:5px;margin-bottom:10px}
+.plat-chip{
+  font-size:9px;padding:2px 7px;border-radius:3px;
+  font-family:var(--ff-mono);border:1px solid var(--rule);color:var(--muted);
+}
+.style-desc{font-size:12px;color:var(--ink3);line-height:1.6;margin-bottom:12px}
+.style-how{background:var(--s1);border-radius:var(--r);padding:12px}
+.style-how-label{font-size:9px;font-family:var(--ff-mono);color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:7px}
+.style-steps{display:flex;flex-direction:column;gap:5px}
+.style-step{font-size:11.5px;color:var(--ink3);display:flex;gap:8px}
+.ss-num{
+  width:17px;height:17px;border-radius:50%;
+  background:var(--ink);color:#fff;
+  font-size:9px;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;margin-top:1px;font-family:var(--ff-mono);
+}
+.style-earn{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:12px;padding:9px 12px;
+  border-radius:var(--r);border:1px solid var(--rule);
+}
+.earn-label{font-size:11px;color:var(--muted)}
+.earn-val{font-family:var(--ff-head);font-size:16px;font-weight:700}
+
+/* ══ NICHE PLAYBOOKS ══ */
+.niche-tabs{display:flex;gap:0;border-bottom:1.5px solid var(--ink);margin-bottom:24px;overflow-x:auto}
+.ntab{
+  font-family:var(--ff-mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;
+  padding:9px 18px;border:none;background:transparent;
+  color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1.5px;
+  transition:all .15s;white-space:nowrap;
+}
+.ntab:hover{color:var(--ink)}
+.ntab.on{color:var(--ink);border-bottom-color:var(--ink);font-weight:500}
+.ntab-panel{display:none}.ntab-panel.on{display:grid;grid-template-columns:1fr 1.2fr;gap:16px}
+.niche-meta{background:#fff;border:1.5px solid var(--rule);border-radius:var(--r2);padding:20px}
+.niche-detail{background:#fff;border:1.5px solid var(--rule);border-radius:var(--r2);padding:20px}
+.nm-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px}
+.nm-name{font-family:var(--ff-head);font-size:22px;font-weight:700}
+.nm-health{font-size:10px;font-family:var(--ff-mono);padding:3px 9px;border-radius:3px;letter-spacing:.05em}
+.nm-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.nm-stat{background:var(--s1);border-radius:var(--r);padding:10px}
+.nm-stat-val{font-family:var(--ff-head);font-size:18px;font-weight:700;line-height:1}
+.nm-stat-label{font-size:9px;color:var(--muted);font-family:var(--ff-mono);margin-top:3px}
+.nm-bar-wrap{height:3px;background:var(--s2);border-radius:2px;margin-bottom:4px;overflow:hidden}
+.nm-bar{height:100%;border-radius:2px}
+.nm-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px}
+.nm-tag{font-size:10px;padding:3px 9px;border-radius:3px;background:var(--s1);color:var(--muted);font-family:var(--ff-mono)}
+.nd-section{margin-bottom:16px}
+.nd-label{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+.nd-list{list-style:none;display:flex;flex-direction:column;gap:5px}
+.nd-list li{font-size:12px;color:var(--ink3);display:flex;gap:8px;padding:6px 8px;background:var(--s1);border-radius:var(--r)}
+.nd-list li::before{content:'·';color:var(--muted);font-size:16px;line-height:1;flex-shrink:0}
+.hook-examples{display:flex;flex-direction:column;gap:6px}
+.hook-ex{
+  background:var(--s1);border-left:3px solid var(--rule2);
+  border-radius:0 var(--r) var(--r) 0;
+  padding:8px 12px;font-size:11.5px;color:var(--ink3);
+  font-style:italic;line-height:1.5;
+}
+.hook-ex.best{border-left-color:var(--ink)}
+
+/* ══ TOOL MATRIX ══ */
+.tool-matrix{width:100%;border-collapse:collapse}
+.tool-matrix th{
+  font-family:var(--ff-mono);font-size:9px;color:var(--muted);
+  letter-spacing:.1em;text-transform:uppercase;
+  padding:9px 14px;border-bottom:1.5px solid var(--ink);text-align:left;
+  background:var(--s1);
+}
+.tool-matrix td{padding:10px 14px;border-bottom:1px solid var(--s2);font-size:12px;color:var(--ink3);vertical-align:top}
+.tool-matrix tbody tr:hover td{background:var(--s1)}
+.tool-matrix .mono{font-family:var(--ff-mono);font-size:11px}
+.use-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:4px}
+.tier{font-family:var(--ff-mono);font-size:9px;padding:2px 7px;border-radius:3px}
+.tier-free{background:var(--green-d);color:var(--green)}
+.tier-paid{background:var(--amber-d);color:var(--amber)}
+.tier-key{background:var(--ink);color:#f0ede6}
+
+/* ══ MONEY MATRIX ══ */
+.money-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.money-card{
+  background:#fff;border:1.5px solid var(--rule);border-radius:var(--r2);
+  padding:16px 18px;
+}
+.mc-rank{font-family:var(--ff-head);font-size:36px;color:var(--s3);line-height:1;margin-bottom:6px}
+.mc-niche{font-family:var(--ff-head);font-size:14px;font-weight:700;margin-bottom:4px}
+.mc-rev{font-family:var(--ff-head);font-size:22px;font-weight:700;margin-bottom:4px}
+.mc-sub{font-size:11px;color:var(--muted);margin-bottom:10px}
+.mc-streams{display:flex;flex-direction:column;gap:4px}
+.mc-stream{display:flex;justify-content:space-between;align-items:center;font-size:11px}
+.mc-stream-label{color:var(--muted)}
+.mc-stream-val{font-family:var(--ff-mono);font-size:11px;color:var(--ink3);font-weight:500}
+
+/* ══ TIPS BOX ══ */
+.tip-box{
+  background:var(--ink);color:#c9c5be;
+  border-radius:var(--r2);padding:20px 24px;
+  margin-top:16px;display:grid;
+  grid-template-columns:auto 1fr;gap:16px;
+  align-items:flex-start;
+}
+.tip-icon{font-size:22px;flex-shrink:0;margin-top:2px}
+.tip-title{font-family:var(--ff-head);font-size:15px;color:#f0ede6;margin-bottom:5px}
+.tip-body{font-size:12px;line-height:1.7}
+.tip-body strong{color:#c9f135}
+
+/* ══ INSIGHT BOX ══ */
+.insight{
+  border-left:3px solid var(--ink);
+  background:var(--s1);border-radius:0 var(--r2) var(--r2) 0;
+  padding:14px 18px;margin-top:12px;
+  font-size:12px;color:var(--ink3);line-height:1.7;
+}
+.insight strong{color:var(--ink);font-weight:600}
+
+/* ══ SCHEDULE GRID ══ */
+.schedule-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.day-col{background:#fff;border:1px solid var(--rule);border-radius:var(--r);overflow:hidden}
+.day-head{
+  padding:8px 6px;text-align:center;
+  font-family:var(--ff-mono);font-size:9px;letter-spacing:.06em;
+  color:#fff;font-weight:500;
+}
+.day-slots{display:flex;flex-direction:column;gap:4px;padding:6px}
+.day-slot{
+  border-radius:3px;padding:5px 6px;font-size:10px;line-height:1.3;
+  border:1px solid var(--rule);
+}
+.day-slot-label{font-family:var(--ff-mono);font-size:8px;color:var(--muted);margin-bottom:2px}
+.day-slot-content{font-size:10px;color:var(--ink3)}
+
+/* ══ ANIMATIONS ══ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.sec{animation:fadeUp .4s ease both}
+.sec:nth-child(2){animation-delay:.05s}
+.sec:nth-child(3){animation-delay:.1s}
+
+/* FOOTER */
+.footer{
+  background:var(--ink);color:#5a5750;
+  padding:28px 52px;
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:80px;
+}
+.footer-brand{font-family:var(--ff-head);font-size:18px;color:#9a9690}
+.footer-note{font-family:var(--ff-mono);font-size:10px;text-align:right;line-height:1.7}
+
+input[type=range]{-webkit-appearance:none;width:100%;height:2px;background:var(--s3);border-radius:1px;outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:var(--ink);cursor:pointer}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Viral AI Video Research · 2025</div>
+  <h1>HOW THE <em>BEST</em><br>ACCOUNTS DO IT</h1>
+  <p class="hero-desc">Deep-dive analysis of diycraftsofficial1, openmatrixai, and elevatemindhq — plus a full playbook for replicating their approach across DIY, health, tech, psychology, and 4 more high-revenue niches.</p>
+  <div class="hero-tags">
+    <span class="hero-tag live">Research complete</span>
+    <span class="hero-tag">3 accounts analysed</span>
+    <span class="hero-tag">7 niche playbooks</span>
+    <span class="hero-tag">Tool stack mapped</span>
+    <span class="hero-tag">Revenue benchmarks</span>
+  </div>
+</div>
+
+<div class="page">
+
+<!-- ══ SECTION 1: ACCOUNT ANALYSIS ══ -->
+<div class="sec">
+  <div class="sec-head">
+    <div class="sec-n">01</div>
+    <div class="sec-title">Account Deep-Dive</div>
+    <div class="sec-tag">What they do & how to copy it</div>
+  </div>
+
+  <div class="acc-grid">
+
+    <!-- ACCOUNT 1: diycraftsofficial1 -->
+    <div class="acc-card">
+      <div class="acc-top">
+        <div class="acc-handle">@diycraftsofficial1</div>
+        <div class="acc-name">DIY Crafts Official</div>
+        <div class="acc-desc">Satisfying, fast-cut DIY project videos — hand reveals, before/after transformations, home decor hacks. Zero face, zero voiceover. Pure visual storytelling.</div>
+        <span class="acc-niche-tag" style="background:#fdf3e3;color:#c97c1a">DIY · Home · Crafts</span>
+      </div>
+      <div class="acc-body">
+        <div class="acc-stat-row">
+          <div class="acc-stat">
+            <div class="acc-stat-val" style="color:#c97c1a">Hands only</div>
+            <div class="acc-stat-label">Video style</div>
+          </div>
+          <div class="acc-stat">
+            <div class="acc-stat-val">15–30s</div>
+            <div class="acc-stat-label">Avg length</div>
+          </div>
+          <div class="acc-stat">
+            <div class="acc-stat-val" style="color:#2d7a4f">High</div>
+            <div class="acc-stat-label">Save rate</div>
+          </div>
+        </div>
+
+        <div class="acc-section-label">What makes them work</div>
+        <ul class="acc-list">
+          <li>ASMR-style sound design — scissors, glue, tearing paper — triggers dopamine without needing voice</li>
+          <li>Tight 3-cut structure: messy start → satisfying process → perfect result</li>
+          <li>Hooks use visual curiosity — viewer can't look away because they want to see the result</li>
+          <li>Every video is inherently "saveable" — people save DIY ideas they plan to try later</li>
+        </ul>
+
+        <div class="acc-section-label">How to replicate</div>
+        <ul class="acc-list">
+          <li>Generate visual prompts for each step: "hands applying hot glue to cardboard frame" — Kling 1.6 or WAN 2.1</li>
+          <li>Use ASMR-style foley sounds from FreeSound.org, layered in FFmpeg</li>
+          <li>Use FLUX to generate clean before/after thumbnail images</li>
+          <li>No voiceover needed — saves on TTS cost entirely</li>
+        </ul>
+
+        <div class="acc-section-label">Tools used (estimated)</div>
+        <div class="acc-tools">
+          <span class="tool-chip">CapCut templates</span>
+          <span class="tool-chip">Stock hands footage</span>
+          <span class="tool-chip">Canva text</span>
+          <span class="tool-chip">ASMR audio</span>
+          <span class="tool-chip">Pexels</span>
+        </div>
+
+        <div class="insight" style="margin-top:12px">
+          <strong>Key insight:</strong> DIY accounts get the highest <em>save rate</em> of any niche — 8–14% saves per view vs 2–4% for most content. Instagram's algorithm heavily weights saves. One viral DIY video can drive 50K+ profile visits.
+        </div>
+      </div>
+    </div>
+
+    <!-- ACCOUNT 2: openmatrixai -->
+    <div class="acc-card">
+      <div class="acc-top">
+        <div class="acc-handle">@openmatrixai</div>
+        <div class="acc-name">Open Matrix AI</div>
+        <div class="acc-desc">Cinematic AI-generated video clips with mind-bending visuals — surreal cityscapes, impossible physics, sci-fi scenarios. Voiceover overlay with tech/AI facts and philosophical hooks.</div>
+        <span class="acc-niche-tag" style="background:#e6ecf8;color:#2c5fbd">AI · Tech · Futurism</span>
+      </div>
+      <div class="acc-body">
+        <div class="acc-stat-row">
+          <div class="acc-stat">
+            <div class="acc-stat-val" style="color:#2c5fbd">Cinematic AI</div>
+            <div class="acc-stat-label">Video style</div>
+          </div>
+          <div class="acc-stat">
+            <div class="acc-stat-val">30–60s</div>
+            <div class="acc-stat-label">Avg length</div>
+          </div>
+          <div class="acc-stat">
+            <div class="acc-stat-val" style="color:#2d7a4f">High</div>
+            <div class="acc-stat-label">Share rate</div>
+          </div>
+        </div>
+
+        <div class="acc-section-label">What makes them work</div>
+        <ul class="acc-list">
+          <li>Pure visual wow factor — viewers share because the video itself is impressive, not just the information</li>
+          <li>Voiceover reads "forbidden knowledge" style facts about AI, physics, simulation theory</li>
+          <li>Hook is always a visual that seems physically impossible — brain triggers "what am I watching?"</li>
+          <li>Comment bait built in — every video poses an unanswerable philosophical question</li>
+        </ul>
+
+        <div class="acc-section-label">How to replicate</div>
+        <ul class="acc-list">
+          <li>Use Kling 1.6 Pro for cinematic shots: "aerial view of a futuristic city in a glass sphere, golden hour"</li>
+          <li>Midjourney or FLUX for still frames, then animate with Kling image-to-video</li>
+          <li>ElevenLabs deep male voice (Adam) for authoritative voiceover — no Kokoro here</li>
+          <li>Claude generates philosophical hook scripts: "What if everything you see is a simulation running at 30fps?"</li>
+        </ul>
+
+        <div class="acc-section-label">Tools used (estimated)</div>
+        <div class="acc-tools">
+          <span class="tool-chip">Kling / Runway</span>
+          <span class="tool-chip">Midjourney</span>
+          <span class="tool-chip">ElevenLabs</span>
+          <span class="tool-chip">CapCut</span>
+          <span class="tool-chip">ChatGPT script</span>
+        </div>
+
+        <div class="insight" style="margin-top:12px">
+          <strong>Key insight:</strong> This style has the highest <em>share rate</em> of any format — 4–9% per view. People share because they want their friends to see the visuals. Use Kling's "dream" style prompts. The visual quality IS the hook.
+        </div>
+      </div>
+    </div>
+
+    <!-- ACCOUNT 3: elevatemindhq -->
+    <div class="acc-card">
+      <div class="acc-top">
+        <div class="acc-handle">@elevatemindhq</div>
+        <div class="acc-name">Elevate Mind HQ</div>
+        <div class="acc-desc">Mindset, stoicism, psychology, and personal growth. Text-on-screen with atmospheric B-roll (nature, cityscapes, sunrise). Deep resonant voiceover. Quote-driven format with commentary.</div>
+        <span class="acc-niche-tag" style="background:#f0eaf8;color:#6b3fa0">Psychology · Mindset · Growth</span>
+      </div>
+      <div class="acc-body">
+        <div class="acc-stat-row">
+          <div class="acc-stat">
+            <div class="acc-stat-val" style="color:#6b3fa0">Quote + B-roll</div>
+            <div class="acc-stat-label">Video style</div>
+          </div>
+          <div class="acc-stat">
+            <div class="acc-stat-val">45–60s</div>
+            <div class="acc-stat-label">Avg length</div>
+          </div>
+          <div class="acc-stat">
+            <div class="acc-stat-val" style="color:#2d7a4f">Very High</div>
+            <div class="acc-stat-label">Follower conv.</div>
+          </div>
+        </div>
+
+        <div class="acc-section-label">What makes them work</div>
+        <ul class="acc-list">
+          <li>Emotional resonance — people feel understood, tag friends, share to their story</li>
+          <li>Atmospheric B-roll (sunrise, ocean, mountains) creates emotional state before words land</li>
+          <li>Script always validates a struggle then offers reframe — pattern: "You're not lazy. You're overwhelmed."</li>
+          <li>Strong follow-through intent — viewers follow because they want more of that feeling</li>
+        </ul>
+
+        <div class="acc-section-label">How to replicate</div>
+        <ul class="acc-list">
+          <li>Pexels/Pixabay for B-roll (sunrise, ocean, forest) — 100% free, no AI video cost needed</li>
+          <li>Claude writes emotionally resonant scripts using the "pain → reframe → truth" template</li>
+          <li>ElevenLabs deep/warm voice (Rachel or Josh) — emotional warmth matters here</li>
+          <li>Word-by-word captions with BOLD on key phrases — Whisper + custom FFmpeg filter</li>
+        </ul>
+
+        <div class="acc-section-label">Tools used (estimated)</div>
+        <div class="acc-tools">
+          <span class="tool-chip">ElevenLabs voice</span>
+          <span class="tool-chip">Pexels B-roll</span>
+          <span class="tool-chip">CapCut captions</span>
+          <span class="tool-chip">Lo-fi music</span>
+          <span class="tool-chip">Claude/ChatGPT</span>
+        </div>
+
+        <div class="insight" style="margin-top:12px">
+          <strong>Key insight:</strong> This is the <em>cheapest</em> style to produce — nearly all stock footage, no expensive AI video generation needed. Cost per video under $0.10 using Kokoro TTS + Pexels. Yet it converts followers and affiliate clicks better than any other niche.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-icon">🔍</div>
+    <div>
+      <div class="tip-title">What all three have in common</div>
+      <div class="tip-body">All three accounts are <strong>100% faceless</strong>. None require a camera. All three use consistent <strong>visual identity</strong> (same fonts, same colour palette, same music style every video — your brand is the aesthetic, not your face). All three hit the <strong>algorithm sweet spots</strong>: saves (DIY), shares (AI/tech), and follows (mindset). Build one account in each vertical and you have a self-reinforcing content empire.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SECTION 2: VIDEO STYLES ══ -->
+<div class="sec">
+  <div class="sec-head">
+    <div class="sec-n">02</div>
+    <div class="sec-title">Video Styles That Work</div>
+    <div class="sec-tag">6 proven formats — pick one per account</div>
+  </div>
+
+  <div class="style-grid">
+    <div class="style-card">
+      <div class="style-num">01</div>
+      <div class="style-name">Cinematic AI Showcase</div>
+      <div class="style-platforms">
+        <span class="plat-chip">Instagram</span><span class="plat-chip">YouTube</span><span class="plat-chip">TikTok</span>
+      </div>
+      <div class="style-desc">Jaw-dropping AI-generated footage with minimal text overlay. The visual IS the content. Best for AI, futurism, nature, luxury niches.</div>
+      <div class="style-how">
+        <div class="style-how-label">How to produce</div>
+        <div class="style-steps">
+          <div class="style-step"><div class="ss-num">1</div><div>Write cinematic scene prompts: "massive wave crashing over futuristic skyscrapers, golden hour, 4K aerial" → Kling 1.6 Pro</div></div>
+          <div class="style-step"><div class="ss-num">2</div><div>Generate 5–8 clips × 5s each, select the 4 best</div></div>
+          <div class="style-step"><div class="ss-num">3</div><div>Minimal text overlay (1 bold sentence), no voiceover, epic orchestral music</div></div>
+          <div class="style-step"><div class="ss-num">4</div><div>End card: "Follow for more AI visuals"</div></div>
+        </div>
+      </div>
+      <div class="style-earn">
+        <span class="earn-label">Revenue model</span>
+        <span class="earn-val" style="color:#2c5fbd">AI tool affiliate + sponsors</span>
+      </div>
+    </div>
+
+    <div class="style-card">
+      <div class="style-num">02</div>
+      <div class="style-name">Quote + Atmospheric B-roll</div>
+      <div class="style-platforms">
+        <span class="plat-chip">Instagram</span><span class="plat-chip">TikTok</span>
+      </div>
+      <div class="style-desc">Resonant quote or psychological insight delivered over nature/city B-roll with deep voiceover. Drives massive follows and shares.</div>
+      <div class="style-how">
+        <div class="style-how-label">How to produce</div>
+        <div class="style-steps">
+          <div class="style-step"><div class="ss-num">1</div><div>Claude writes 45s "pain → reframe → truth" script — psychology, stoicism, mindset niche</div></div>
+          <div class="style-step"><div class="ss-num">2</div><div>Pexels B-roll: sunrise, ocean, rain, candle — 100% free, zero AI video cost</div></div>
+          <div class="style-step"><div class="ss-num">3</div><div>ElevenLabs warm voice, slow pacing, word-by-word caption burn</div></div>
+          <div class="style-step"><div class="ss-num">4</div><div>Lo-fi piano music underneath at -20dB</div></div>
+        </div>
+      </div>
+      <div class="style-earn">
+        <span class="earn-label">Revenue model</span>
+        <span class="earn-val" style="color:#6b3fa0">Affiliate courses + ad rev</span>
+      </div>
+    </div>
+
+    <div class="style-card">
+      <div class="style-num">03</div>
+      <div class="style-name">Fast-Cut Tutorial / DIY</div>
+      <div class="style-platforms">
+        <span class="plat-chip">Instagram</span><span class="plat-chip">Pinterest</span><span class="plat-chip">YouTube</span>
+      </div>
+      <div class="style-desc">Satisfying step-by-step process with ASMR sounds. Before → process → after. No voiceover, no face. Pure hands-and-materials action.</div>
+      <div class="style-how">
+        <div class="style-how-label">How to produce</div>
+        <div class="style-steps">
+          <div class="style-step"><div class="ss-num">1</div><div>WAN 2.1 for hands close-up clips: "hands folding origami crane, overhead view, time-lapse"</div></div>
+          <div class="style-step"><div class="ss-num">2</div><div>FreeSound.org: scissors, paper, glue, tearing sounds layered in FFmpeg</div></div>
+          <div class="style-step"><div class="ss-num">3</div><div>Text overlay only: step names in clean sans-serif at bottom of screen</div></div>
+          <div class="style-step"><div class="ss-num">4</div><div>Final result held up to camera — FLUX-generated thumbnail</div></div>
+        </div>
+      </div>
+      <div class="style-earn">
+        <span class="earn-label">Revenue model</span>
+        <span class="earn-val" style="color:#c97c1a">Craft supply affiliate + saves</span>
+      </div>
+    </div>
+
+    <div class="style-card">
+      <div class="style-num">04</div>
+      <div class="style-name">Talking Head AI Avatar</div>
+      <div class="style-platforms">
+        <span class="plat-chip">YouTube</span><span class="plat-chip">TikTok</span><span class="plat-chip">LinkedIn</span>
+      </div>
+      <div class="style-desc">Consistent AI character delivers finance, tech, or health facts directly to camera. Feels personal without showing your real face. Builds parasocial connection.</div>
+      <div class="style-how">
+        <div class="style-how-label">How to produce</div>
+        <div class="style-steps">
+          <div class="style-step"><div class="ss-num">1</div><div>Create AI avatar with Higgsfield.ai — one master image, consistent across all videos</div></div>
+          <div class="style-step"><div class="ss-num">2</div><div>Claude writes punchy 45s script in first-person: "I made $12K last month doing this one thing…"</div></div>
+          <div class="style-step"><div class="ss-num">3</div><div>ElevenLabs cloned voice for the character — same voice every video = brand identity</div></div>
+          <div class="style-step"><div class="ss-num">4</div><div>B-roll cutaways for the "proof" sections</div></div>
+        </div>
+      </div>
+      <div class="style-earn">
+        <span class="earn-label">Revenue model</span>
+        <span class="earn-val" style="color:#d94f3d">Finance aff. + sponsorships</span>
+      </div>
+    </div>
+
+    <div class="style-card">
+      <div class="style-num">05</div>
+      <div class="style-name">Kinetic Typography Facts</div>
+      <div class="style-platforms">
+        <span class="plat-chip">TikTok</span><span class="plat-chip">Instagram</span><span class="plat-chip">Shorts</span>
+      </div>
+      <div class="style-desc">Fast-moving animated text with shocking statistics or facts. Zero visuals required. The text animation IS the content. History, science, health facts work best.</div>
+      <div class="style-how">
+        <div class="style-how-label">How to produce</div>
+        <div class="style-steps">
+          <div class="style-step"><div class="ss-num">1</div><div>Claude writes 5 shocking facts format: "Fact 1: Humans share 60% DNA with bananas…"</div></div>
+          <div class="style-step"><div class="ss-num">2</div><div>Remotion.dev renders kinetic typography (React-based, fully coded, zero manual editing)</div></div>
+          <div class="style-step"><div class="ss-num">3</div><div>Kokoro TTS voiceover — fast pace, dramatic delivery</div></div>
+          <div class="style-step"><div class="ss-num">4</div><div>Minimal background: gradient or subtle texture. No costly video generation.</div></div>
+        </div>
+      </div>
+      <div class="style-earn">
+        <span class="earn-label">Revenue model</span>
+        <span class="earn-val" style="color:#1a7a72">Ad revenue + rewatch loops</span>
+      </div>
+    </div>
+
+    <div class="style-card">
+      <div class="style-num">06</div>
+      <div class="style-name">Before / After Transformation</div>
+      <div class="style-platforms">
+        <span class="plat-chip">Instagram</span><span class="plat-chip">TikTok</span><span class="plat-chip">Pinterest</span>
+      </div>
+      <div class="style-desc">Split-screen or sequential reveal of dramatic transformation. Fitness, home decor, design, cooking. Triggers dopamine release on reveal — highest rewatch rate of all formats.</div>
+      <div class="style-how">
+        <div class="style-how-label">How to produce</div>
+        <div class="style-steps">
+          <div class="style-step"><div class="ss-num">1</div><div>FLUX img-to-img: generate "before" and "after" versions of same scene (messy room → clean room)</div></div>
+          <div class="style-step"><div class="ss-num">2</div><div>Kling image-to-video for smooth transition animation of the transformation</div></div>
+          <div class="style-step"><div class="ss-num">3</div><div>Text: "Before" / "After" + product/tip callout with affiliate link</div></div>
+          <div class="style-step"><div class="ss-num">4</div><div>Fast-paced music, satisfying sound effect on reveal</div></div>
+        </div>
+      </div>
+      <div class="style-earn">
+        <span class="earn-label">Revenue model</span>
+        <span class="earn-val" style="color:#c97c1a">Product affiliate + sponsorship</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SECTION 3: NICHE PLAYBOOKS ══ -->
+<div class="sec">
+  <div class="sec-head">
+    <div class="sec-n">03</div>
+    <div class="sec-title">Niche Playbooks</div>
+    <div class="sec-tag">Full strategy per vertical</div>
+  </div>
+
+  <div class="niche-tabs" id="niche-tabs">
+    <button class="ntab on" onclick="showNiche('finance',this)">Finance</button>
+    <button class="ntab" onclick="showNiche('ai',this)">AI & Tech</button>
+    <button class="ntab" onclick="showNiche('diy',this)">DIY & Crafts</button>
+    <button class="ntab" onclick="showNiche('health',this)">Health</button>
+    <button class="ntab" onclick="showNiche('psych',this)">Psychology</button>
+    <button class="ntab" onclick="showNiche('history',this)">History & Facts</button>
+    <button class="ntab" onclick="showNiche('food',this)">Food & Recipe</button>
+  </div>
+
+  <div id="niches"></div>
+</div>
+
+<!-- ══ SECTION 4: MULTI-ACCOUNT MANAGEMENT ══ -->
+<div class="sec">
+  <div class="sec-head">
+    <div class="sec-n">04</div>
+    <div class="sec-title">Managing Multiple Accounts</div>
+    <div class="sec-tag">The portfolio approach</div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+    <div style="background:#fff;border:1.5px solid var(--rule);border-radius:var(--r2);padding:20px">
+      <div style="font-family:var(--ff-head);font-size:16px;font-weight:700;margin-bottom:14px">The golden rule: 1 account = 1 niche = 1 voice</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="padding:10px 12px;background:var(--s1);border-radius:var(--r);font-size:12px;color:var(--ink3)"><strong style="color:var(--ink)">Never mix niches on one account.</strong> Instagram's algorithm learns what audience to show you to. Cross-niche posting confuses it and tanks reach by 40–60%.</div>
+        <div style="padding:10px 12px;background:var(--s1);border-radius:var(--r);font-size:12px;color:var(--ink3)"><strong style="color:var(--ink)">Separate Instagram business accounts.</strong> Each niche = new Gmail + new Instagram. Use Meta Business Suite to manage all from one dashboard.</div>
+        <div style="padding:10px 12px;background:var(--s1);border-radius:var(--r);font-size:12px;color:var(--ink3)"><strong style="color:var(--ink)">Different pipeline config per account.</strong> Clone your n8n workflow, swap the niche filter, topic keywords, voice ID, and affiliate links. 20-minute setup per new account.</div>
+        <div style="padding:10px 12px;background:var(--s1);border-radius:var(--r);font-size:12px;color:var(--ink3)"><strong style="color:var(--ink)">Consistent visual identity per account.</strong> Same font, same colour scheme, same music style every video. Viewers should recognise the account from the first frame.</div>
+      </div>
+    </div>
+
+    <div style="background:#fff;border:1.5px solid var(--rule);border-radius:var(--r2);padding:20px">
+      <div style="font-family:var(--ff-head);font-size:16px;font-weight:700;margin-bottom:14px">Recommended 6-account portfolio</div>
+      <div style="display:flex;flex-direction:column;gap:7px">
+        <div style="display:flex;align-items:center;gap:12px;padding:9px 12px;background:var(--s1);border-radius:var(--r)">
+          <div style="width:32px;height:32px;border-radius:6px;background:#fdf3e3;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">💰</div>
+          <div style="flex:1"><div style="font-size:12px;font-weight:600">Finance & Money</div><div style="font-size:10px;color:var(--muted)">Highest CPM · $18–40 · YouTube first</div></div>
+          <div style="font-family:var(--ff-mono);font-size:11px;color:#c97c1a">Month 1</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:9px 12px;background:var(--s1);border-radius:var(--r)">
+          <div style="width:32px;height:32px;border-radius:6px;background:#e6ecf8;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">🤖</div>
+          <div style="flex:1"><div style="font-size:12px;font-weight:600">AI & Tech</div><div style="font-size:10px;color:var(--muted)">Fast growing · $12–18 CPM · SaaS affiliates</div></div>
+          <div style="font-family:var(--ff-mono);font-size:11px;color:#c97c1a">Month 1</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:9px 12px;background:var(--s1);border-radius:var(--r)">
+          <div style="width:32px;height:32px;border-radius:6px;background:#f0eaf8;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">🧠</div>
+          <div style="flex:1"><div style="font-size:12px;font-weight:600">Psychology & Mindset</div><div style="font-size:10px;color:var(--muted)">Cheapest to make · best follower conversion</div></div>
+          <div style="font-family:var(--ff-mono);font-size:11px;color:#2d7a4f">Month 2</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:9px 12px;background:var(--s1);border-radius:var(--r)">
+          <div style="width:32px;height:32px;border-radius:6px;background:#fde8e6;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">🔨</div>
+          <div style="flex:1"><div style="font-size:12px;font-weight:600">DIY & Crafts</div><div style="font-size:10px;color:var(--muted)">Highest save rate · craft/Amazon affiliates</div></div>
+          <div style="font-family:var(--ff-mono);font-size:11px;color:#2d7a4f">Month 2</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:9px 12px;background:var(--s1);border-radius:var(--r)">
+          <div style="width:32px;height:32px;border-radius:6px;background:#e6f2ec;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">💪</div>
+          <div style="flex:1"><div style="font-size:12px;font-weight:600">Health & Fitness</div><div style="font-size:10px;color:var(--muted)">Supplement affiliates 20–40% · huge audience</div></div>
+          <div style="font-family:var(--ff-mono);font-size:11px;color:#6b3fa0">Month 3</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:9px 12px;background:var(--s1);border-radius:var(--r)">
+          <div style="width:32px;height:32px;border-radius:6px;background:#e5f2f1;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">📚</div>
+          <div style="flex:1"><div style="font-size:12px;font-weight:600">History & Facts</div><div style="font-size:10px;color:var(--muted)">Easiest to script · high rewatch · broad audience</div></div>
+          <div style="font-family:var(--ff-mono);font-size:11px;color:#6b3fa0">Month 3</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- POSTING SCHEDULE -->
+  <div style="background:#fff;border:1.5px solid var(--rule);border-radius:var(--r2);padding:20px;margin-bottom:16px">
+    <div style="font-family:var(--ff-head);font-size:16px;font-weight:700;margin-bottom:16px">Optimal posting schedule — Instagram Reels (per account)</div>
+    <div class="schedule-grid">
+      <div class="day-col"><div class="day-head" style="background:#1a1814">MON</div><div class="day-slots"><div class="day-slot" style="background:#fdf3e3;border-color:#f0d9a8"><div class="day-slot-label">9 AM</div><div class="day-slot-content">Tutorial / how-to</div></div><div class="day-slot" style="background:#e6f2ec;border-color:#b8d9c6"><div class="day-slot-label">7 PM</div><div class="day-slot-content">Motivational</div></div></div></div>
+      <div class="day-col"><div class="day-head" style="background:#2c5fbd">TUE</div><div class="day-slots"><div class="day-slot" style="background:#e6ecf8;border-color:#b5c9f0"><div class="day-slot-label">12 PM</div><div class="day-slot-content">Facts / stats</div></div><div class="day-slot" style="background:#f0eaf8;border-color:#d0b8ef"><div class="day-slot-label">8 PM</div><div class="day-slot-content">Psychology hook</div></div></div></div>
+      <div class="day-col"><div class="day-head" style="background:#2d7a4f">WED</div><div class="day-slots"><div class="day-slot" style="background:#fdf3e3;border-color:#f0d9a8"><div class="day-slot-label">10 AM</div><div class="day-slot-content">DIY / craft</div></div><div class="day-slot" style="background:#e6ecf8;border-color:#b5c9f0"><div class="day-slot-label">6 PM</div><div class="day-slot-content">AI showcase</div></div></div></div>
+      <div class="day-col"><div class="day-head" style="background:#c97c1a">THU</div><div class="day-slots"><div class="day-slot" style="background:#f0eaf8;border-color:#d0b8ef"><div class="day-slot-label">2 PM</div><div class="day-slot-content">Opinion / debate</div></div><div class="day-slot" style="background:#e6f2ec;border-color:#b8d9c6"><div class="day-slot-label">9 PM</div><div class="day-slot-content">Before / after</div></div></div></div>
+      <div class="day-col"><div class="day-head" style="background:#d94f3d">FRI</div><div class="day-slots"><div class="day-slot" style="background:#fde8e6;border-color:#f0b8b2"><div class="day-slot-label">11 AM</div><div class="day-slot-content">Top 5 list</div></div><div class="day-slot" style="background:#fdf3e3;border-color:#f0d9a8"><div class="day-slot-label">7 PM</div><div class="day-slot-content">Finance tip</div></div></div></div>
+      <div class="day-col"><div class="day-head" style="background:#6b3fa0">SAT</div><div class="day-slots"><div class="day-slot" style="background:#e6ecf8;border-color:#b5c9f0"><div class="day-slot-label">10 AM</div><div class="day-slot-content">Tech reveal</div></div><div class="day-slot" style="background:#f0eaf8;border-color:#d0b8ef"><div class="day-slot-label">4 PM</div><div class="day-slot-content">Quote video</div></div></div></div>
+      <div class="day-col"><div class="day-head" style="background:#1a7a72">SUN</div><div class="day-slots"><div class="day-slot" style="background:#e5f2f1;border-color:#b2d9d6"><div class="day-slot-label">11 AM</div><div class="day-slot-content">History fact</div></div><div class="day-slot" style="background:#e6f2ec;border-color:#b8d9c6"><div class="day-slot-label">6 PM</div><div class="day-slot-content">Health tip</div></div></div></div>
+    </div>
+    <div style="margin-top:12px;font-size:11px;color:var(--muted);font-family:var(--ff-mono)">Best times for Instagram: 9–11 AM, 12–2 PM, 7–9 PM in your audience's local timezone · Post 2× per day minimum per account · Consistency > perfection</div>
+  </div>
+</div>
+
+<!-- ══ SECTION 5: REVENUE BY NICHE ══ -->
+<div class="sec">
+  <div class="sec-head">
+    <div class="sec-n">05</div>
+    <div class="sec-title">Revenue Benchmarks</div>
+    <div class="sec-tag">Real earning potential by niche</div>
+  </div>
+
+  <div class="money-grid">
+    <div class="money-card">
+      <div class="mc-rank">1</div>
+      <div class="mc-niche">Finance & Money</div>
+      <div class="mc-rev" style="color:#c97c1a">$3,000–8,000/mo</div>
+      <div class="mc-sub">at 500K+ monthly views</div>
+      <div class="mc-streams">
+        <div class="mc-stream"><span class="mc-stream-label">YouTube RPM</span><span class="mc-stream-val">$18–40</span></div>
+        <div class="mc-stream"><span class="mc-stream-label">Affiliate (TradingView etc)</span><span class="mc-stream-val">30% commission</span></div>
+        <div class="mc-stream"><span class="mc-stream-label">Sponsorships</span><span class="mc-stream-val">$300–800/video</span></div>
+      </div>
+    </div>
+    <div class="money-card">
+      <div class="mc-rank">2</div>
+      <div class="mc-niche">AI & Tech Tools</div>
+      <div class="mc-rev" style="color:#2c5fbd">$2,000–6,000/mo</div>
+      <div class="mc-sub">at 400K+ monthly views</div>
+      <div class="mc-streams">
+        <div class="mc-stream"><span class="mc-stream-label">YouTube RPM</span><span class="mc-stream-val">$12–22</span></div>
+        <div class="mc-stream"><span class="mc-stream-label">SaaS affiliate</span><span class="mc-stream-val">20–40% recurring</span></div>
+        <div class="mc-stream"><span class="mc-stream-label">Sponsorships</span><span class="mc-stream-val">$200–500/video</span></div>
+      </div>
+    </div>
+    <div class="money-card">
+      <div class="mc-rank">3</div>
+      <div class="mc-niche">Health & Fitness</div>
+      <div class="mc-rev" style="color:#2d7a4f">$1,500–4,000/mo</div>
+      <div class="mc-sub">at 300K+ monthly views</div>
+      <div class="mc-streams">
+        <div class="mc-stream"><span class="mc-stream-label">YouTube RPM</span><span class="mc-stream-val">$10–18</span></div>
+        <div class="mc-stream"><span class="mc-stream-label">Supplement affiliate</span><span class="mc-stream-val">20–40% commission</span></div>
+        <div class="mc-stream"><span class="mc-stream-label">Fitness app sponsors</span><span class="mc-stream-val">$100–400/video</span></div>
+      </div>
+    </div>
+    <div class="money-card">
+      <div class="mc-rank">4</div>
+      <div class="mc-niche">DIY & Crafts</div>
+      <div class="mc-rev" style="color:#c97c1a">$800–2,500/mo</div>
+      <div class="mc-sub">at 200K+ monthly views</div>
+      <div class="mc-streams">
+        <div class="mc-stream"><span class="mc-stream-label">Amazon Associates</span><span class="mc-stream-val">4–10% commission</span></div>
+        <div class="mc-stream"><span class="mc-stream-label">YouTube RPM</span><span class="mc-stream-val">$5–10</span></div>
+        <div class="mc-stream"><span class="mc-stream-label">Instagram Collab posts</span><span class="mc-stream-val">$50–200/post</span></div>
+      </div>
+    </div>
+    <div class="money-card">
+      <div class="mc-rank">5</div>
+      <div class="mc-niche">Psychology & Mindset</div>
+      <div class="mc-rev" style="color:#6b3fa0">$1,000–3,000/mo</div>
+      <div class="mc-sub">at 250K+ monthly views</div>
+      <div class="mc-streams">
+        <div class="mc-stream"><span class="mc-stream-label">Course affiliates</span><span class="mc-stream-val">30–50% commission</span></div>
+        <div class="mc-stream"><span class="mc-stream-label">Digital products</span><span class="mc-stream-val">$17–97 price point</span></div>
+        <div class="mc-stream"><span class="mc-stream-label">Email list → nurture</span><span class="mc-stream-val">$1–5/subscriber/mo</span></div>
+      </div>
+    </div>
+    <div class="money-card">
+      <div class="mc-rank">6</div>
+      <div class="mc-niche">History & Facts</div>
+      <div class="mc-rev" style="color:#1a7a72">$600–1,800/mo</div>
+      <div class="mc-sub">at 200K+ monthly views</div>
+      <div class="mc-streams">
+        <div class="mc-stream"><span class="mc-stream-label">YouTube RPM</span><span class="mc-stream-val">$6–12</span></div>
+        <div class="mc-stream"><span class="mc-stream-label">Book affiliates</span><span class="mc-stream-val">4–10% commission</span></div>
+        <div class="mc-stream"><span class="mc-stream-label">Audible sponsorship</span><span class="mc-stream-val">$150–400/video</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-icon">💡</div>
+    <div>
+      <div class="tip-title">The real money multiplier: cross-promote all 6 accounts</div>
+      <div class="tip-body">At 6 accounts posting 3× per day = <strong>18 videos per day</strong> across your portfolio. At Month 4 average revenue per video of $8, that's <strong>$144/day = $4,320/month</strong> from ad revenue alone — before affiliates and sponsors. Finance + AI Tools carry 70% of the total revenue. Psychology has the lowest production cost and best follower conversion. DIY drives the most saves which feeds the algorithm for all other content.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SECTION 6: TOOL MATRIX ══ -->
+<div class="sec">
+  <div class="sec-head">
+    <div class="sec-n">06</div>
+    <div class="sec-title">Tool Selection Matrix</div>
+    <div class="sec-tag">Right tool for each job</div>
+  </div>
+
+  <div style="background:#fff;border:1.5px solid var(--rule);border-radius:var(--r2);overflow:hidden">
+    <table class="tool-matrix">
+      <thead><tr><th>Tool</th><th>Best for</th><th>Quality</th><th>Cost</th><th>Use case</th><th>Tier</th></tr></thead>
+      <tbody>
+        <tr><td><strong>fal.ai Kling 1.6 Pro</strong></td><td>Cinematic AI video, hero clips</td><td>⭐⭐⭐⭐⭐</td><td class="mono">$0.07/sec</td><td>openmatrixai-style visuals, talking AI avatar B-roll</td><td><span class="tier tier-key">Core</span></td></tr>
+        <tr><td><strong>fal.ai WAN 2.1</strong></td><td>Bulk B-roll, hands footage</td><td>⭐⭐⭐⭐</td><td class="mono">$0.02/sec</td><td>DIY hands clips, background motion, action scenes</td><td><span class="tier tier-key">Core</span></td></tr>
+        <tr><td><strong>fal.ai FLUX 1.1 Pro</strong></td><td>Thumbnails, stills, before/after</td><td>⭐⭐⭐⭐⭐</td><td class="mono">$0.04/img</td><td>Every account needs custom thumbnails — use always</td><td><span class="tier tier-key">Core</span></td></tr>
+        <tr><td><strong>Higgsfield.ai</strong></td><td>Consistent AI avatar/character</td><td>⭐⭐⭐⭐⭐</td><td class="mono">$29/mo</td><td>Finance/tech talking head — consistent face every video</td><td><span class="tier tier-paid">Optional</span></td></tr>
+        <tr><td><strong>Pexels API</strong></td><td>Free stock B-roll</td><td>⭐⭐⭐⭐</td><td class="mono">Free</td><td>Mindset/psychology B-roll, nature scenes, urban footage</td><td><span class="tier tier-free">Free</span></td></tr>
+        <tr><td><strong>ElevenLabs Turbo v2.5</strong></td><td>Hero voice, voice cloning</td><td>⭐⭐⭐⭐⭐</td><td class="mono">$0.30/1K chars</td><td>Finance/psychology — emotional warmth needed</td><td><span class="tier tier-key">Core</span></td></tr>
+        <tr><td><strong>fal.ai Kokoro TTS</strong></td><td>Bulk voiceover</td><td>⭐⭐⭐⭐</td><td class="mono">$0.02/1K chars</td><td>History facts, DIY, any high-volume account</td><td><span class="tier tier-key">Core</span></td></tr>
+        <tr><td><strong>Claude Haiku 3.5</strong></td><td>Script bulk generation</td><td>⭐⭐⭐⭐⭐</td><td class="mono">$0.80/1M tok</td><td>All niches — 10 scripts/min at scale</td><td><span class="tier tier-key">Core</span></td></tr>
+        <tr><td><strong>Claude Sonnet 4.5</strong></td><td>Hook writing, emotional scripts</td><td>⭐⭐⭐⭐⭐</td><td class="mono">$3/1M tok</td><td>Psychology hooks, finance authority scripts</td><td><span class="tier tier-paid">Hero only</span></td></tr>
+        <tr><td><strong>FFmpeg + Python</strong></td><td>Video assembly, captions</td><td>—</td><td class="mono">Free</td><td>All accounts — stitch, caption, resize, export</td><td><span class="tier tier-free">Free</span></td></tr>
+        <tr><td><strong>Remotion.dev</strong></td><td>Kinetic typography videos</td><td>⭐⭐⭐⭐⭐</td><td class="mono">Free OSS</td><td>History facts, finance stats — zero video generation cost</td><td><span class="tier tier-free">Free</span></td></tr>
+        <tr><td><strong>CapCut (manual)</strong></td><td>Quick edits, viral templates</td><td>⭐⭐⭐⭐</td><td class="mono">Free</td><td>Riding trending audio/transitions — do 1–2/week manually</td><td><span class="tier tier-free">Supplement</span></td></tr>
+        <tr><td><strong>n8n (self-hosted)</strong></td><td>Full pipeline automation</td><td>—</td><td class="mono">$0 self-host</td><td>Orchestrates all stages — the brain of the operation</td><td><span class="tier tier-key">Core</span></td></tr>
+        <tr><td><strong>Publer / Buffer</strong></td><td>Multi-platform scheduling</td><td>—</td><td class="mono">$15/mo</td><td>Instagram + TikTok + Facebook auto-post</td><td><span class="tier tier-paid">Required</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</div><!-- /page -->
+
+<div class="footer">
+  <div class="footer-brand">Viral AI Video Playbook</div>
+  <div class="footer-note">Based on analysis of diycraftsofficial1, openmatrixai, elevatemindhq<br>+ research across 50+ viral faceless accounts in 2025</div>
+</div>
+
+<script>
+// ── NICHE DATA ──
+const niches = {
+  finance: {
+    name:'Finance & Money', health:'Highest CPM', hc:'#2d7a4f', hbg:'#e6f2ec',
+    stats:[{v:'$18–40',l:'YouTube CPM'},{v:'500K+',l:'Views/mo target'},{v:'30%',l:'Affiliate comm.'},{v:'High',l:'Sponsor interest'}],
+    barColor:'#c97c1a', barW:92,
+    tags:['YouTube Shorts','TikTok','Finance ads','TradingView','Hostinger'],
+    topics:['5 stocks to buy this week','This investing mistake costs most people $10,000/year','How to make $1,000/month passive income','The truth about crypto in 2025','Warren Buffett\'s hidden rule most ignore'],
+    hooks:['"Most people will never know this investing secret..." (best)','If you have $500 saved, do this immediately','The 5-minute money habit that changed my life'],
+    bestHook:'Pattern interrupt + number ($500, 5 minutes, $10K)',
+    format:'AI avatar (Higgsfield) OR kinetic typography with stock B-roll. Never pure text.',
+    affiliates:['TradingView (30% recurring)','Masterworks (art investing)','Coinbase (crypto)','NordVPN (common sponsor)'],
+    cost:'$0.40–0.80/video (avatar mode), $0.08–0.15/video (kinetic text)',
+  },
+  ai: {
+    name:'AI & Tech Tools', health:'Trending',hc:'#2c5fbd',hbg:'#e6ecf8',
+    stats:[{v:'$12–22',l:'YouTube CPM'},{v:'400K+',l:'Views/mo target'},{v:'40%',l:'Affiliate comm.'},{v:'Very High',l:'Tool sponsors'}],
+    barColor:'#2c5fbd',barW:80,
+    tags:['YouTube','LinkedIn','TikTok','SaaS affiliates','Tech sponsors'],
+    topics:['5 AI tools replacing your job in 2025','The ChatGPT prompt nobody shares','How I built a $10K/month business with AI tools','Claude vs ChatGPT — honest 30-day test','This AI tool is completely free and most don\'t know it'],
+    hooks:['Most people using AI are doing it wrong — here\'s why (best)','I tested 50 AI tools so you don\'t have to','This free AI tool made me $2,000 last month'],
+    bestHook:'Authority + specificity. "I tested X so you don\'t have to" outperforms generic AI claims.',
+    format:'Cinematic Kling visuals for B-roll + screen recording overlays for tool demos. Mix both.',
+    affiliates:['Notion (20% recurring)','ElevenLabs (22% recurring)','Jasper AI','Midjourney','NordVPN'],
+    cost:'$0.50–0.90/video (Kling B-roll), $0.20/video (screen record + stock)',
+  },
+  diy: {
+    name:'DIY & Crafts',health:'Stable',hc:'#c97c1a',hbg:'#fdf3e3',
+    stats:[{v:'8–14%',l:'Save rate'},{v:'$5–10',l:'YouTube CPM'},{v:'Amazon',l:'Best affiliate'},{v:'Pinterest',l:'Bonus platform'}],
+    barColor:'#c97c1a',barW:72,
+    tags:['Instagram Reels','Pinterest','YouTube Shorts','Amazon Associates','Craft sponsors'],
+    topics:['5-minute cardboard decor hack','DIY floating shelf for under $5','Turn old jeans into a tote bag in 60 seconds','This cleaning hack saves 2 hours a week','Origami flower in 30 seconds — no glue'],
+    hooks:['Wait for the result... (visual curiosity — show messy start, cut before reveal) (best)','POV: You spent $2 and your home looks like Pinterest','This took me 5 minutes and everyone asks where I bought it'],
+    bestHook:'Visual open loop — show the "before" in the first 2 frames. Viewer stays to see the result.',
+    format:'Hands-only, overhead or side angle, no face. ASMR sounds + upbeat music. No voiceover needed.',
+    affiliates:['Amazon Associates (craft supplies)','Etsy affiliate','Cricut (cutting machine affiliate)','Home Depot'],
+    cost:'$0.05–0.25/video — WAN 2.1 for hands clips or actual stock. Very cheap.',
+  },
+  health: {
+    name:'Health & Fitness',health:'Evergreen',hc:'#2d7a4f',hbg:'#e6f2ec',
+    stats:[{v:'$10–18',l:'YouTube CPM'},{v:'20–40%',l:'Supplement aff.'},{v:'3×',l:'Weekly posts'},{v:'Transform',l:'Key hook type'}],
+    barColor:'#2d7a4f',barW:78,
+    tags:['Instagram','TikTok','YouTube','Supplement affiliates','Fitness apps'],
+    topics:['5 foods destroying your gut (that seem healthy)','The 10-minute morning routine that changed my body','One supplement most doctors won\'t recommend','Why you\'re not losing weight (it\'s not calories)','7 exercises that burn fat faster than running'],
+    hooks:['"Stop doing X — it\'s actually making you worse" (warning hook — best)','The one habit that takes 2 minutes and changes your metabolism','I lost 12kg changing just one thing — this is it'],
+    bestHook:'Warning/revelation frame — "Stop doing X" triggers defensive attention. Very high retention.',
+    format:'Before/after transformation + kinetic stats + B-roll (gym, food, nature). Warm female voice best.',
+    affiliates:['Athletic Greens (AG1) — $40–80/sale','MyProtein','Huel','Thrive Market','Headspace'],
+    cost:'$0.20–0.50/video — mix of FLUX before/after stills + Pexels fitness B-roll',
+  },
+  psych: {
+    name:'Psychology & Mindset',health:'High growth',hc:'#6b3fa0',hbg:'#f0eaf8',
+    stats:[{v:'6–12%',l:'Story share rate'},{v:'$8–14',l:'YouTube CPM'},{v:'50%',l:'Course aff. comm.'},{v:'Follow',l:'Key conversion'}],
+    barColor:'#6b3fa0',barW:68,
+    tags:['Instagram','TikTok','YouTube','Course affiliates','Email list','Digital products'],
+    topics:['The reason you self-sabotage (and how to stop)','3 dark psychology tricks used on you daily','Why highly intelligent people are often unhappy','The uncomfortable truth about people-pleasing','Stoic principles most people ignore (but need)'],
+    hooks:['"You\'re not lazy. You\'re overwhelmed." — validates before reframing (best)','The psychological reason you can\'t stop scrolling','If you do X, your brain is actually doing this...'],
+    bestHook:'Validation hook — name the pain first. "You\'re not lazy. You\'re exhausted." gets highest saves + shares.',
+    format:'Atmospheric B-roll (ocean, rain, sunrise, fire) + deep warm voiceover + word-by-word captions. No AI video needed.',
+    affiliates:['Mindvalley (40–50% commission)','BetterHelp ($100/referral)','Audible','Headspace','MasterClass'],
+    cost:'$0.05–0.15/video — cheapest niche. 100% Pexels B-roll + Kokoro TTS. Near-zero AI cost.',
+  },
+  history: {
+    name:'History & Facts',health:'Stable',hc:'#1a7a72',hbg:'#e5f2f1',
+    stats:[{v:'High',l:'Rewatch rate'},{v:'$6–12',l:'YouTube CPM'},{v:'Broad',l:'Audience age'},{v:'Low',l:'Competition'}],
+    barColor:'#1a7a72',barW:58,
+    tags:['YouTube Shorts','Facebook Reels','TikTok','Audible sponsor','Book affiliates'],
+    topics:['The Roman empire collapsed for this one reason','A forgotten war that changed everything','The most powerful person in history nobody talks about','This scientific discovery was hidden for 50 years','The strange real story behind a famous conspiracy'],
+    hooks:['"Nobody teaches this in school..." — opens curiosity gap (best)','In 1453, one man\'s decision changed civilization forever','The story of X sounds fake but it\'s completely true'],
+    bestHook:'Curiosity gap + authority denial. "Nobody teaches this in school" implies forbidden knowledge.',
+    format:'Kinetic typography + archival-style stock footage (Pexels has great historical B-roll) + authoritative voiceover.',
+    affiliates:['Audible ($5–15/signup)','Skillshare (40% recurring)','Amazon book links','Brilliant.org'],
+    cost:'$0.10–0.30/video — kinetic text + Pexels stock. Very low cost at scale.',
+  },
+  food: {
+    name:'Food & Recipe',health:'Growing',hc:'#d94f3d',hbg:'#fde8e6',
+    stats:[{v:'High',l:'Save rate'},{v:'$6–10',l:'YouTube CPM'},{v:'Amazon',l:'Kitchen affiliates'},{v:'Pinterest',l:'Top platform'}],
+    barColor:'#d94f3d',barW:62,
+    tags:['Instagram Reels','Pinterest','TikTok','Amazon kitchen','Food sponsors'],
+    topics:['5-ingredient pasta that impresses everyone','The Gordon Ramsay technique anyone can do','This $3 recipe tastes like a $40 restaurant dish','Viral recipes that are actually worth making','One pan, 15 minutes, 5 different dinners'],
+    hooks:['"Stop spending $15 on restaurant [dish] — make it at home in 3 minutes" (best)','This ingredient transforms any cheap meal into something incredible','POV: you just learned the one cooking trick professionals hide'],
+    bestHook:'Cost-saving + simplicity. "Make restaurant quality at home for $3" drives massive saves + shares.',
+    format:'Overhead food prep shots (hands only) + ASMR cooking sounds + fast cut at each step. No voiceover needed.',
+    affiliates:['Amazon kitchen tools','HelloFresh (up to $10/signup)','Instacart','Ninja (appliances)','Williams-Sonoma'],
+    cost:'$0.10–0.30/video — WAN 2.1 for cooking close-ups or stock footage. ASMR audio from FreeSound.',
+  },
+};
+
+function showNiche(id, btn) {
+  document.querySelectorAll('.ntab').forEach(t=>t.classList.remove('on'));
+  btn.classList.add('on');
+  const n = niches[id];
+  const el = document.getElementById('niches');
+  el.innerHTML = `<div class="ntab-panel on">
+    <div class="niche-meta">
+      <div class="nm-head">
+        <div class="nm-name">${n.name}</div>
+        <span class="nm-health" style="background:${n.hbg};color:${n.hc}">${n.health}</span>
+      </div>
+      <div class="nm-stat-grid">
+        ${n.stats.map(s=>`<div class="nm-stat"><div class="nm-stat-val" style="color:${n.hc}">${s.v}</div><div class="nm-stat-label">${s.l}</div></div>`).join('')}
+      </div>
+      <div class="nm-bar-wrap"><div class="nm-bar" style="width:${n.barW}%;background:${n.barColor}"></div></div>
+      <div style="font-size:10px;color:var(--muted);font-family:var(--ff-mono);margin-bottom:10px">Opportunity score: ${n.barW}/100</div>
+      <div class="nm-tags">${n.tags.map(t=>`<span class="nm-tag">${t}</span>`).join('')}</div>
+      <div style="margin-top:14px">
+        <div class="nd-label">Affiliate stack</div>
+        <div class="nd-list">${n.affiliates.map(a=>`<li>${a}</li>`).join('')}</div>
+      </div>
+      <div style="margin-top:12px;padding:10px 12px;background:var(--s1);border-radius:var(--r);font-size:11px;color:var(--ink3)">
+        <strong style="color:var(--ink)">Cost per video:</strong> ${n.cost}
+      </div>
+    </div>
+    <div class="niche-detail">
+      <div class="nd-section">
+        <div class="nd-label">Top performing topics</div>
+        <div class="nd-list">${n.topics.map(t=>`<li>${t}</li>`).join('')}</div>
+      </div>
+      <div class="nd-section">
+        <div class="nd-label">Hook formulas that work</div>
+        <div class="hook-examples">
+          ${n.hooks.map((h,i)=>`<div class="hook-ex${i===0?' best':''}">${h}</div>`).join('')}
+        </div>
+        <div style="font-size:11px;color:var(--muted);margin-top:6px;font-family:var(--ff-mono)">Best hook type: ${n.bestHook}</div>
+      </div>
+      <div class="nd-section" style="margin-top:12px">
+        <div class="nd-label">Best video format</div>
+        <div style="font-size:12px;color:var(--ink3);padding:10px 12px;background:var(--s1);border-radius:var(--r);line-height:1.6">${n.format}</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// Init first niche
+showNiche('finance', document.querySelector('.ntab.on'));
+</script>
+</body>
+</html>

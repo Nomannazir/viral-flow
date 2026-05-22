@@ -1,0 +1,23 @@
+# Credentials & tokens — never commit these
+credentials.json
+youtube_token.pickle
+*.pickle
+.env
+.env.*
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Generated output — large video/image files
+output/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# macOS
+.DS_Store
+extra/cred.rtf

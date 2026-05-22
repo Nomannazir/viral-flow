@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ViralFlow Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Cabinet+Grotesk:wght@400;500;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07080a;--s1:#0e0f12;--s2:#141519;--s3:#1c1d22;--s4:#232429;
+  --b1:#2a2b32;--b2:#38393f;--b3:#4a4b52;
+  --t1:#f0f0f2;--t2:#9899a4;--t3:#5c5d68;--t4:#3a3b44;
+  --gold:#f0b429;--gold-d:#3d2e08;
+  --green:#10d98c;--green-d:#062e1c;
+  --red:#ff4757;--red-d:#2d0a10;
+  --blue:#4891ff;--blue-d:#0a1c38;
+  --violet:#9d6fff;--violet-d:#1e1038;
+  --orange:#ff7c3a;--orange-d:#2d1508;
+  --cyan:#00d4ff;--cyan-d:#001e2d;
+  --ff-head:'Syne',sans-serif;
+  --ff-body:'Cabinet Grotesk',sans-serif;
+  --ff-mono:'DM Mono',monospace;
+  --r:6px;--r2:10px;--r3:14px;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--t1);font-family:var(--ff-body);font-size:13px;line-height:1.55;overflow:hidden;height:100vh}
+::-webkit-scrollbar{width:3px;height:3px}
+::-webkit-scrollbar-thumb{background:var(--b2);border-radius:2px}
+button,select,input{font-family:inherit;font-size:inherit}
+
+/* SHELL */
+.shell{display:flex;height:100vh;overflow:hidden}
+
+/* ─── SIDEBAR ─── */
+.sidebar{
+  width:210px;flex-shrink:0;
+  background:var(--s1);
+  border-right:1px solid var(--b1);
+  display:flex;flex-direction:column;
+  overflow-y:auto;overflow-x:hidden;
+}
+.logo-area{
+  padding:18px 16px 14px;
+  border-bottom:1px solid var(--b1);
+  display:flex;align-items:center;gap:10px;
+}
+.logo-badge{
+  width:34px;height:34px;border-radius:8px;
+  background:linear-gradient(135deg,var(--gold),var(--orange));
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--ff-head);font-weight:800;font-size:14px;color:#000;
+  flex-shrink:0;
+}
+.logo-txt{font-family:var(--ff-head);font-weight:800;font-size:15px;letter-spacing:-.03em}
+.logo-plan{font-size:9px;color:var(--gold);font-family:var(--ff-mono);letter-spacing:.1em;margin-top:1px}
+
+.nav-section{padding:10px 10px 2px;font-size:9px;color:var(--t3);font-family:var(--ff-mono);letter-spacing:.12em;text-transform:uppercase}
+.nav-btn{
+  display:flex;align-items:center;gap:9px;
+  padding:7px 10px;margin:1px 6px;
+  border-radius:var(--r);cursor:pointer;
+  font-size:12px;color:var(--t2);
+  border:1px solid transparent;
+  transition:all .12s;background:transparent;width:calc(100% - 12px);text-align:left;
+}
+.nav-btn:hover{background:var(--s2);color:var(--t1)}
+.nav-btn.on{background:var(--s3);color:var(--t1);border-color:var(--b1)}
+.nav-icon{width:14px;height:14px;flex-shrink:0;opacity:.6}
+.nav-btn.on .nav-icon{opacity:1}
+.nav-ct{margin-left:auto;font-family:var(--ff-mono);font-size:9px;padding:2px 5px;border-radius:3px;background:var(--s4);color:var(--t3)}
+.nav-ct.alert{background:rgba(255,71,87,.15);color:var(--red)}
+.nav-ct.live-ct{background:rgba(16,217,140,.12);color:var(--green)}
+
+.revenue-box{
+  margin:10px 8px;padding:12px 12px;
+  background:linear-gradient(135deg,rgba(240,180,41,.07),rgba(255,124,58,.05));
+  border:1px solid rgba(240,180,41,.2);
+  border-radius:var(--r2);
+}
+.rev-label{font-size:9px;color:var(--gold);font-family:var(--ff-mono);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+.rev-val{font-family:var(--ff-head);font-size:22px;font-weight:800;color:var(--gold);line-height:1}
+.rev-sub{font-size:10px;color:var(--t3);margin-top:3px}
+.rev-breakdown{margin-top:8px;display:flex;flex-direction:column;gap:3px}
+.rev-row{display:flex;justify-content:space-between;font-size:10px}
+.rev-row-label{color:var(--t3)}
+.rev-row-val{font-family:var(--ff-mono);color:var(--t2)}
+
+.run-btn{
+  margin:8px;padding:9px;border-radius:var(--r2);
+  background:var(--gold);color:#000;border:none;
+  font-family:var(--ff-head);font-weight:700;font-size:12px;
+  cursor:pointer;letter-spacing:.01em;transition:all .15s;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.run-btn:hover{background:#e8a81f;transform:translateY(-1px)}
+.run-btn:active{transform:scale(.98)}
+
+/* ─── MAIN ─── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+
+/* ─── TOPBAR ─── */
+.topbar{
+  height:48px;border-bottom:1px solid var(--b1);
+  display:flex;align-items:center;padding:0 20px;gap:12px;
+  flex-shrink:0;background:var(--s1);
+}
+.tb-title{font-family:var(--ff-head);font-size:14px;font-weight:700;letter-spacing:-.01em}
+.tb-live{display:flex;align-items:center;gap:5px;font-family:var(--ff-mono);font-size:10px;color:var(--green);margin-left:8px}
+.live-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.tb-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.tb-btn{
+  padding:5px 12px;border-radius:var(--r);
+  border:1px solid var(--b2);background:transparent;
+  color:var(--t2);font-size:11px;cursor:pointer;transition:all .12s;
+}
+.tb-btn:hover{background:var(--s2);color:var(--t1);border-color:var(--b3)}
+.tb-btn.accent{background:var(--green);color:#000;border-color:var(--green);font-weight:700}
+.tb-btn.accent:hover{background:#0dc47e}
+
+/* ─── CONTENT ─── */
+.content{flex:1;overflow-y:auto;padding:18px 20px;min-width:0}
+
+/* ─── STAT CARDS ─── */
+.stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:18px}
+.stat{
+  background:var(--s1);border:1px solid var(--b1);
+  border-radius:var(--r2);padding:13px 14px;
+  transition:border-color .15s;cursor:default;
+}
+.stat:hover{border-color:var(--b2)}
+.stat-label{font-size:9px;color:var(--t3);font-family:var(--ff-mono);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px}
+.stat-val{font-family:var(--ff-head);font-size:22px;font-weight:800;line-height:1}
+.stat-delta{font-size:10px;margin-top:4px}
+.up{color:var(--green)}.dn{color:var(--red)}.nu{color:var(--t3)}
+
+/* ─── TWO COL ─── */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px}
+
+/* ─── PANEL ─── */
+.panel{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r3);overflow:hidden;margin-bottom:14px}
+.panel-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 16px;border-bottom:1px solid var(--b1);
+}
+.panel-title{font-family:var(--ff-head);font-size:12px;font-weight:700;letter-spacing:-.01em}
+.panel-tag{font-family:var(--ff-mono);font-size:9px;padding:2px 7px;border-radius:3px;border:1px solid var(--b2);color:var(--t3)}
+.panel-body{padding:14px 16px}
+
+/* ─── HOOK BUILDER ─── */
+.hook-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.hook-card{
+  background:var(--s2);border:1px solid var(--b1);border-radius:var(--r2);
+  padding:12px;cursor:pointer;transition:all .15s;
+  position:relative;overflow:hidden;
+}
+.hook-card:hover{border-color:var(--b3);background:var(--s3)}
+.hook-card.winner{border-color:var(--gold);background:rgba(240,180,41,.04)}
+.hook-card.winner::before{content:'WINNER';position:absolute;top:6px;right:8px;font-size:8px;font-family:var(--ff-mono);color:var(--gold);letter-spacing:.1em}
+.hook-type{font-size:9px;color:var(--t3);font-family:var(--ff-mono);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px}
+.hook-text{font-size:12px;color:var(--t1);line-height:1.4;margin-bottom:10px}
+.hook-metrics{display:flex;gap:12px}
+.hook-m{font-size:10px}
+.hook-m-label{color:var(--t3)}
+.hook-m-val{font-family:var(--ff-mono);color:var(--t1);font-weight:500}
+.hook-bar{height:2px;background:var(--s4);border-radius:1px;margin-top:8px;overflow:hidden}
+.hook-bar-fill{height:100%;border-radius:1px;transition:width 1s ease}
+
+/* ─── MONETIZATION ─── */
+.mono-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.mono-card{
+  background:var(--s2);border:1px solid var(--b1);border-radius:var(--r2);
+  padding:13px;transition:all .15s;cursor:pointer;
+}
+.mono-card:hover{border-color:var(--b3)}
+.mono-icon{font-size:20px;margin-bottom:7px}
+.mono-name{font-family:var(--ff-head);font-size:12px;font-weight:700;margin-bottom:3px}
+.mono-rev{font-family:var(--ff-mono);font-size:16px;font-weight:500;color:var(--gold);margin-bottom:3px}
+.mono-desc{font-size:10px;color:var(--t3);line-height:1.4}
+.mono-status{display:inline-flex;align-items:center;gap:4px;margin-top:7px;font-size:9px;font-family:var(--ff-mono);padding:2px 6px;border-radius:3px}
+.mono-on{background:rgba(16,217,140,.1);color:var(--green)}
+.mono-off{background:var(--s4);color:var(--t3)}
+.mono-setup{background:rgba(240,180,41,.1);color:var(--gold)}
+
+/* ─── RETENTION METER ─── */
+.retention-arc-wrap{display:flex;align-items:center;justify-content:center;padding:20px 0 10px;position:relative}
+.ret-label-center{position:absolute;text-align:center}
+.ret-pct{font-family:var(--ff-head);font-size:28px;font-weight:800;color:var(--green)}
+.ret-sub{font-size:10px;color:var(--t3)}
+
+/* ─── CONTENT SCORE ─── */
+.score-meter{display:flex;flex-direction:column;gap:8px}
+.score-row{display:flex;align-items:center;gap:10px}
+.score-label{font-size:11px;color:var(--t2);width:110px;flex-shrink:0}
+.score-bar-wrap{flex:1;height:4px;background:var(--s4);border-radius:2px;overflow:hidden}
+.score-bar-fill{height:100%;border-radius:2px;transition:width 1.2s ease}
+.score-num{font-family:var(--ff-mono);font-size:10px;color:var(--t2);width:26px;text-align:right;flex-shrink:0}
+
+/* ─── PLATFORM PERF ─── */
+.plat-list{display:flex;flex-direction:column;gap:7px}
+.plat-row{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 12px;background:var(--s2);border-radius:var(--r);
+  border:1px solid var(--b1);
+}
+.plat-name{font-size:12px;font-weight:500;width:100px;flex-shrink:0}
+.plat-bar-wrap{flex:1;height:3px;background:var(--s4);border-radius:2px;overflow:hidden}
+.plat-bar-fill{height:100%;border-radius:2px}
+.plat-views{font-family:var(--ff-mono);font-size:11px;color:var(--t2);width:52px;text-align:right}
+.plat-cpm{font-family:var(--ff-mono);font-size:10px;color:var(--t3);width:36px;text-align:right}
+.plat-rev{font-family:var(--ff-mono);font-size:11px;font-weight:500;width:42px;text-align:right}
+
+/* ─── VIRAL SCORE DIAL ─── */
+.dial-wrap{display:flex;align-items:center;justify-content:center;padding:12px 0}
+
+/* ─── QUEUE TABLE ─── */
+.qtable{width:100%;border-collapse:collapse}
+.qtable th{font-size:9px;color:var(--t3);font-family:var(--ff-mono);letter-spacing:.08em;text-transform:uppercase;padding:7px 10px;border-bottom:1px solid var(--b1);text-align:left;white-space:nowrap}
+.qtable td{padding:8px 10px;border-bottom:1px solid rgba(42,43,50,.6);font-size:11px;color:var(--t2);vertical-align:middle}
+.qtable tbody tr:hover td{background:var(--s2);color:var(--t1)}
+.qtable tbody tr:last-child td{border-bottom:none}
+.viral-badge{font-family:var(--ff-mono);font-size:10px;padding:2px 6px;border-radius:3px;font-weight:500}
+.v-hot{background:rgba(240,180,41,.15);color:var(--gold)}
+.v-good{background:rgba(16,217,140,.1);color:var(--green)}
+.v-ok{background:var(--s3);color:var(--t3)}
+.stage-pill{font-size:9px;padding:2px 7px;border-radius:3px;font-family:var(--ff-mono);border:1px solid var(--b1)}
+.mono-pill{font-size:9px;padding:1px 6px;border-radius:3px;font-family:var(--ff-mono)}
+
+/* ─── AB TEST ─── */
+.ab-wrap{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ab-card{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r2);padding:13px}
+.ab-label{font-size:9px;font-family:var(--ff-mono);letter-spacing:.1em;color:var(--t3);margin-bottom:8px}
+.ab-hook{font-size:11px;color:var(--t1);line-height:1.45;margin-bottom:10px;font-style:italic}
+.ab-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.ab-stat-box{background:var(--s3);border-radius:var(--r);padding:7px 8px;text-align:center}
+.ab-stat-val{font-family:var(--ff-mono);font-size:13px;font-weight:500}
+.ab-stat-label{font-size:9px;color:var(--t3);margin-top:2px}
+.ab-winner-tag{
+  display:inline-block;margin-top:8px;
+  font-size:9px;font-family:var(--ff-mono);
+  padding:2px 8px;border-radius:3px;
+  background:rgba(240,180,41,.15);color:var(--gold);
+}
+
+/* ─── LOG ─── */
+.log-wrap{height:220px;overflow-y:auto;display:flex;flex-direction:column-reverse}
+.log-line{display:flex;gap:8px;margin-bottom:5px;font-family:var(--ff-mono);font-size:10px;animation:slip .2s ease}
+@keyframes slip{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
+.l-ts{color:var(--t4);flex-shrink:0;width:56px}
+.l-tag{width:52px;flex-shrink:0;padding:1px 0;text-align:center;border-radius:2px;font-size:9px;font-weight:500}
+.l-msg{color:var(--t2);line-height:1.4}
+
+/* ─── TOGGLE ─── */
+.tog{width:32px;height:17px;border-radius:9px;background:var(--s4);border:1px solid var(--b2);cursor:pointer;position:relative;transition:background .15s;flex-shrink:0}
+.tog.on{background:var(--green);border-color:var(--green)}
+.tog::after{content:'';position:absolute;top:2px;left:2px;width:11px;height:11px;border-radius:50%;background:var(--t2);transition:transform .15s,background .15s}
+.tog.on::after{transform:translateX(15px);background:#fff}
+
+/* ─── TIMELINE ─── */
+.timeline{display:flex;flex-direction:column;gap:8px}
+.tl-item{display:flex;gap:10px;align-items:flex-start}
+.tl-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.tl-content{flex:1}
+.tl-title{font-size:11px;color:var(--t1);font-weight:500;margin-bottom:2px}
+.tl-sub{font-size:10px;color:var(--t3)}
+
+/* ─── NICHE CARDS ─── */
+.niche-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.nc{
+  background:var(--s1);border:1px solid var(--b1);border-radius:var(--r2);
+  padding:14px;cursor:pointer;transition:all .15s;
+}
+.nc:hover{border-color:var(--b3);background:var(--s2)}
+.nc.active{border-color:var(--gold)}
+.nc-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.nc-name{font-family:var(--ff-head);font-size:13px;font-weight:700}
+.nc-health{font-size:9px;font-family:var(--ff-mono);padding:2px 6px;border-radius:3px}
+.nc-stats{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px}
+.nc-stat{background:var(--s2);border-radius:var(--r);padding:7px 8px}
+.nc-stat-label{font-size:9px;color:var(--t3);font-family:var(--ff-mono);letter-spacing:.04em}
+.nc-stat-val{font-family:var(--ff-head);font-size:15px;font-weight:700;margin-top:2px}
+.nc-bar-wrap{height:2px;background:var(--s4);border-radius:1px;margin-bottom:6px}
+.nc-bar{height:100%;border-radius:1px}
+.nc-tags{display:flex;gap:4px;flex-wrap:wrap}
+.nc-tag{font-size:9px;padding:2px 6px;border-radius:3px;background:var(--s3);color:var(--t3);font-family:var(--ff-mono)}
+
+/* ─── VIEWS ─── */
+.view{display:none}.view.active{display:block}
+
+/* ─── ANIMATIONS ─── */
+.view.active .stats-row,.view.active .panel,.view.active .two-col,.view.active .three-col{animation:fadeUp .3s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.panel:nth-child(2){animation-delay:.05s}
+.panel:nth-child(3){animation-delay:.1s}
+
+/* ─── REVENUE CHART ─── */
+.mini-chart{display:flex;align-items:flex-end;gap:3px;height:48px;padding:0 2px}
+.bar{border-radius:2px 2px 0 0;flex:1;transition:height .5s ease,background .3s;cursor:pointer}
+.bar:hover{filter:brightness(1.3)}
+
+/* ─── SCROLLBAR ─── */
+.log-wrap::-webkit-scrollbar{width:2px}
+.log-wrap::-webkit-scrollbar-thumb{background:var(--b1)}
+
+input[type=range]{-webkit-appearance:none;width:100%;height:2px;background:var(--s4);border-radius:2px;outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:var(--gold);cursor:pointer}
+select{background:var(--s3);border:1px solid var(--b2);color:var(--t2);padding:4px 8px;border-radius:var(--r);font-size:11px}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<!-- ─── SIDEBAR ─── -->
+<aside class="sidebar">
+  <div class="logo-area">
+    <div class="logo-badge">VF</div>
+    <div>
+      <div class="logo-txt">ViralFlow</div>
+      <div class="logo-plan">PRO PLAN</div>
+    </div>
+  </div>
+
+  <div class="revenue-box">
+    <div class="rev-label">Revenue MTD</div>
+    <div class="rev-val" id="sb-rev">$3,241</div>
+    <div class="rev-sub">↑ 28% vs last month</div>
+    <div class="rev-breakdown">
+      <div class="rev-row"><span class="rev-row-label">Ad revenue</span><span class="rev-row-val">$1,840</span></div>
+      <div class="rev-row"><span class="rev-row-label">Affiliates</span><span class="rev-row-val">$940</span></div>
+      <div class="rev-row"><span class="rev-row-label">Sponsorships</span><span class="rev-row-val">$461</span></div>
+    </div>
+  </div>
+
+  <div class="nav-section">Pipeline</div>
+  <button class="nav-btn on" onclick="nav('dashboard',this)">
+    <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg>
+    Dashboard<span class="nav-ct live-ct">live</span>
+  </button>
+  <button class="nav-btn" onclick="nav('viral',this)">
+    <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12L6 6l3 3 2-4 3 5"/></svg>
+    Viral engine<span class="nav-ct alert">7 hot</span>
+  </button>
+  <button class="nav-btn" onclick="nav('content',this)">
+    <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="1.5"/><path d="M5 6h6M5 8.5h4"/></svg>
+    Content studio<span class="nav-ct">12</span>
+  </button>
+  <button class="nav-btn" onclick="nav('monetize',this)">
+    <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v6M6 7h3a1 1 0 010 2H6"/></svg>
+    Monetization
+  </button>
+
+  <div class="nav-section">Channels</div>
+  <button class="nav-btn" onclick="nav('niches',this)">
+    <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="5" r="2.5"/><path d="M2 14c0-3.3 2.7-5 6-5s6 1.7 6 5"/></svg>
+    Niche channels<span class="nav-ct">6</span>
+  </button>
+  <button class="nav-btn" onclick="nav('abtests',this)">
+    <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2v12M12 2v12M4 8h8"/></svg>
+    A/B hook tests<span class="nav-ct alert">3 running</span>
+  </button>
+  <button class="nav-btn" onclick="nav('schedule',this)">
+    <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="12" height="11" rx="1.5"/><path d="M5 2v2M11 2v2M2 7h12"/></svg>
+    Publish schedule
+  </button>
+
+  <div class="nav-section">Finance</div>
+  <button class="nav-btn" onclick="nav('revenue',this)">
+    <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12L6 7l3 3 2-3 3 3"/><path d="M12 5h2v2"/></svg>
+    Revenue tracker
+  </button>
+  <button class="nav-btn" onclick="nav('costs',this)">
+    <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v.5M8 10.5V11M6 7.5a2 2 0 014 0c0 1-1 1.5-2 2"/></svg>
+    Cost optimizer
+  </button>
+
+  <button class="run-btn" onclick="triggerRun()" id="run-btn">
+    ▶ Run pipeline
+  </button>
+</aside>
+
+<!-- ─── MAIN ─── -->
+<div class="main">
+<header class="topbar">
+  <div class="tb-title" id="page-title">Dashboard</div>
+  <div class="tb-live"><div class="live-dot"></div>3 stages active</div>
+  <div class="tb-right">
+    <button class="tb-btn" onclick="addLog('SYS','Pipeline paused by user')">⏸ Pause</button>
+    <button class="tb-btn accent" onclick="nav('content',document.querySelector('.nav-btn:nth-child(8)'))">+ New video</button>
+  </div>
+</header>
+
+<div class="content">
+
+<!-- ══ DASHBOARD ══ -->
+<div id="v-dashboard" class="view active">
+  <div class="stats-row">
+    <div class="stat"><div class="stat-label">Revenue MTD</div><div class="stat-val" style="color:var(--gold)">$3,241</div><div class="stat-delta up">↑ 28% vs last month</div></div>
+    <div class="stat"><div class="stat-label">Videos live</div><div class="stat-val" style="color:var(--t1)">247</div><div class="stat-delta up">↑ 12 today</div></div>
+    <div class="stat"><div class="stat-label">Total views 7d</div><div class="stat-val" style="color:var(--cyan)">1.24M</div><div class="stat-delta up">↑ 34%</div></div>
+    <div class="stat"><div class="stat-label">Avg retention</div><div class="stat-val" style="color:var(--green)">61%</div><div class="stat-delta up">↑ 4pts (target 60%)</div></div>
+    <div class="stat"><div class="stat-label">Cost / video</div><div class="stat-val" style="color:var(--orange)">$0.55</div><div class="stat-delta up">↓ $0.12 under target</div></div>
+  </div>
+
+  <div class="two-col">
+    <!-- Revenue by day -->
+    <div class="panel">
+      <div class="panel-head"><div class="panel-title">Revenue — last 7 days</div><span class="panel-tag">$3,241 MTD</span></div>
+      <div class="panel-body">
+        <div class="mini-chart" id="rev-chart"></div>
+        <div style="display:flex;justify-content:space-between;margin-top:8px">
+          <div style="font-size:9px;color:var(--t3);font-family:var(--ff-mono)">Mon — Sun</div>
+          <div style="font-size:9px;color:var(--gold);font-family:var(--ff-mono)">Best: Wed $612</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px">
+          <div style="background:var(--s2);border-radius:var(--r);padding:8px;text-align:center">
+            <div style="font-family:var(--ff-mono);font-size:14px;font-weight:500;color:var(--gold)">$182</div>
+            <div style="font-size:9px;color:var(--t3);margin-top:2px">Today</div>
+          </div>
+          <div style="background:var(--s2);border-radius:var(--r);padding:8px;text-align:center">
+            <div style="font-family:var(--ff-mono);font-size:14px;font-weight:500;color:var(--t1)">$463</div>
+            <div style="font-size:9px;color:var(--t3);margin-top:2px">This week</div>
+          </div>
+          <div style="background:var(--s2);border-radius:var(--r);padding:8px;text-align:center">
+            <div style="font-family:var(--ff-mono);font-size:14px;font-weight:500;color:var(--t1)">$3,241</div>
+            <div style="font-size:9px;color:var(--t3);margin-top:2px">This month</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Platform performance -->
+    <div class="panel">
+      <div class="panel-head"><div class="panel-title">Platform performance</div><span class="panel-tag">all channels</span></div>
+      <div class="panel-body">
+        <div class="plat-list">
+          <div class="plat-row">
+            <div class="plat-name" style="color:var(--red)">YouTube Shorts</div>
+            <div class="plat-bar-wrap"><div class="plat-bar-fill" style="width:82%;background:var(--red)"></div></div>
+            <div class="plat-views">614K</div>
+            <div class="plat-cpm" style="color:var(--t3)">$18</div>
+            <div class="plat-rev" style="color:var(--gold)">$1,452</div>
+          </div>
+          <div class="plat-row">
+            <div class="plat-name" style="color:var(--cyan)">TikTok</div>
+            <div class="plat-bar-wrap"><div class="plat-bar-fill" style="width:58%;background:var(--cyan)"></div></div>
+            <div class="plat-views">380K</div>
+            <div class="plat-cpm" style="color:var(--t3)">$4</div>
+            <div class="plat-rev" style="color:var(--gold)">$740</div>
+          </div>
+          <div class="plat-row">
+            <div class="plat-name" style="color:var(--violet)">Instagram Reels</div>
+            <div class="plat-bar-wrap"><div class="plat-bar-fill" style="width:38%;background:var(--violet)"></div></div>
+            <div class="plat-views">196K</div>
+            <div class="plat-cpm" style="color:var(--t3)">$2</div>
+            <div class="plat-rev" style="color:var(--gold)">$620</div>
+          </div>
+          <div class="plat-row">
+            <div class="plat-name" style="color:var(--blue)">Facebook Reels</div>
+            <div class="plat-bar-wrap"><div class="plat-bar-fill" style="width:22%;background:var(--blue)"></div></div>
+            <div class="plat-views">54K</div>
+            <div class="plat-cpm" style="color:var(--t3)">$8</div>
+            <div class="plat-rev" style="color:var(--gold)">$429</div>
+          </div>
+        </div>
+        <div style="margin-top:12px;padding:9px 10px;background:rgba(240,180,41,.05);border:1px solid rgba(240,180,41,.15);border-radius:var(--r);font-size:10px;color:var(--t2)">
+          💡 YouTube has highest CPM ($18). Push Finance &amp; AI Tools content there first for max revenue.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <!-- Top viral queue -->
+    <div class="panel">
+      <div class="panel-head"><div class="panel-title">Hot queue — ready to generate</div><span class="panel-tag" style="color:var(--red);border-color:rgba(255,71,87,.3)">7 viral ideas</span></div>
+      <div class="panel-body" style="padding:0">
+        <table class="qtable">
+          <thead><tr><th>Topic</th><th>Niche</th><th>Score</th><th>Est. revenue</th><th></th></tr></thead>
+          <tbody id="hot-queue"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Pipeline log -->
+    <div class="panel">
+      <div class="panel-head"><div class="panel-title">Live pipeline log</div><div class="tb-live"><div class="live-dot"></div>streaming</div></div>
+      <div class="panel-body" style="padding:10px 14px">
+        <div class="log-wrap" id="log-body"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ VIRAL ENGINE ══ -->
+<div id="v-viral" class="view">
+  <div class="stats-row">
+    <div class="stat"><div class="stat-label">Ideas today</div><div class="stat-val" style="color:var(--t1)">47</div><div class="stat-delta up">31 above threshold</div></div>
+    <div class="stat"><div class="stat-label">Avg virality score</div><div class="stat-val" style="color:var(--gold)">7.8</div><div class="stat-delta nu">out of 10</div></div>
+    <div class="stat"><div class="stat-label">Top hook type</div><div class="stat-val" style="color:var(--orange);font-size:14px;font-family:var(--ff-mono)">Pattern Int.</div><div class="stat-delta up">72% avg retention</div></div>
+    <div class="stat"><div class="stat-label">Best niche today</div><div class="stat-val" style="color:var(--cyan);font-size:14px;font-family:var(--ff-mono)">Finance</div><div class="stat-delta up">Score avg 8.4</div></div>
+    <div class="stat"><div class="stat-label">Trend refresh</div><div class="stat-val" style="color:var(--green);font-size:14px">2h ago</div><div class="stat-delta nu">next in 22min</div></div>
+  </div>
+
+  <div class="two-col">
+    <div class="panel">
+      <div class="panel-head"><div class="panel-title">Virality score breakdown</div><span class="panel-tag">per idea</span></div>
+      <div class="panel-body">
+        <div class="score-meter" id="score-meter"></div>
+        <div style="margin-top:14px;padding:10px 12px;background:var(--s2);border-radius:var(--r);font-size:10px;color:var(--t2);line-height:1.6">
+          <strong style="color:var(--gold)">Top signal:</strong> Search volume spike detected for "AI job replacement" — 340% above 30-day avg on Google Trends.
+        </div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><div class="panel-title">Content score engine</div><span class="panel-tag">live analysis</span></div>
+      <div class="panel-body">
+        <div style="font-size:11px;color:var(--t2);margin-bottom:10px">Selected: <span style="color:var(--t1)">"5 AI tools replacing your job in 2025"</span></div>
+        <div class="score-meter" id="content-score-meter"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:14px">
+          <span style="font-size:11px;color:var(--t2)">Overall viral potential</span>
+          <span style="font-family:var(--ff-mono);font-size:20px;font-weight:700;color:var(--green)">8.7</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head"><div class="panel-title">Full idea queue — sorted by virality</div><button class="tb-btn" style="font-size:10px" onclick="generateAll()">Generate all above 8.0</button></div>
+    <div class="panel-body" style="padding:0">
+      <table class="qtable">
+        <thead><tr><th>#</th><th>Topic</th><th>Niche</th><th>Score</th><th>Hook type</th><th>Monetization angle</th><th>Est. CPM</th><th>Action</th></tr></thead>
+        <tbody id="full-queue"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══ CONTENT STUDIO ══ -->
+<div id="v-content" class="view">
+  <div class="two-col">
+    <div class="panel">
+      <div class="panel-head"><div class="panel-title">Hook library — top performers</div><span class="panel-tag">by retention</span></div>
+      <div class="panel-body">
+        <div class="hook-grid" id="hook-grid"></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><div class="panel-title">Script builder</div><span class="panel-tag">30–60s format</span></div>
+      <div class="panel-body">
+        <div style="margin-bottom:10px">
+          <div style="font-size:10px;color:var(--t3);font-family:var(--ff-mono);margin-bottom:5px">TOPIC</div>
+          <div style="background:var(--s2);border:1px solid var(--b2);border-radius:var(--r);padding:8px 10px;font-size:11px;color:var(--t1)">"5 AI tools replacing jobs in 2025"</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+          <div>
+            <div style="font-size:10px;color:var(--t3);font-family:var(--ff-mono);margin-bottom:5px">PLATFORM</div>
+            <select><option>YouTube Shorts</option><option>TikTok</option><option>Instagram Reels</option></select>
+          </div>
+          <div>
+            <div style="font-size:10px;color:var(--t3);font-family:var(--ff-mono);margin-bottom:5px">LENGTH</div>
+            <select><option>30 seconds</option><option>45 seconds</option><option>60 seconds</option></select>
+          </div>
+        </div>
+        <div style="font-size:10px;color:var(--t3);font-family:var(--ff-mono);margin-bottom:5px">HOOK TEMPLATE</div>
+        <select style="width:100%;margin-bottom:12px"><option>Pattern interrupt — "Most people..."</option><option>Open loop — "Nobody tells you..."</option><option>Warning — "If you do X, stop..."</option><option>Curiosity gap — "The secret behind..."</option></select>
+        <div style="background:var(--s2);border:1px solid var(--b1);border-radius:var(--r2);padding:12px;margin-bottom:10px">
+          <div style="font-size:9px;color:var(--orange);font-family:var(--ff-mono);margin-bottom:6px">HOOK (0–3s)</div>
+          <div style="font-size:11px;color:var(--t1);line-height:1.5">"Most people have no idea that 5 everyday tools are already replacing their jobs — and they're free to use."</div>
+          <div style="height:1px;background:var(--b1);margin:10px 0"></div>
+          <div style="font-size:9px;color:var(--t3);font-family:var(--ff-mono);margin-bottom:6px">BUILD (3–27s)</div>
+          <div style="font-size:11px;color:var(--t2);line-height:1.5">Tool 1 is Claude — it can write, analyze and code... Tool 2 is Midjourney — designers beware...</div>
+          <div style="height:1px;background:var(--b1);margin:10px 0"></div>
+          <div style="font-size:9px;color:var(--green);font-family:var(--ff-mono);margin-bottom:6px">CTA (last 3s)</div>
+          <div style="font-size:11px;color:var(--t2);line-height:1.5">Comment which tool scares you most. Follow for daily AI updates.</div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="tb-btn accent" style="flex:1;padding:8px" onclick="addLog('SCRIPT','Script generated: AI tools replacing jobs (AI Tools niche)')">Generate script</button>
+          <button class="tb-btn" style="flex:1;padding:8px">+ A/B variant</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="three-col">
+    <div class="panel">
+      <div class="panel-head"><div class="panel-title">Visual strategy</div></div>
+      <div class="panel-body">
+        <div style="font-size:10px;color:var(--t3);font-family:var(--ff-mono);margin-bottom:8px">MODEL ROUTING</div>
+        <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:var(--s2);border-radius:var(--r)">
+            <span style="font-size:11px">Hero clips (score ≥8)</span>
+            <span style="font-family:var(--ff-mono);font-size:10px;color:var(--gold)">Kling 1.6 Pro</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:var(--s2);border-radius:var(--r)">
+            <span style="font-size:11px">Bulk B-roll</span>
+            <span style="font-family:var(--ff-mono);font-size:10px;color:var(--t2)">WAN 2.1</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:var(--s2);border-radius:var(--r)">
+            <span style="font-size:11px">Filler footage</span>
+            <span style="font-family:var(--ff-mono);font-size:10px;color:var(--green)">Pexels (free)</span>
+          </div>
+        </div>
+        <div style="font-size:10px;color:var(--t3);margin-bottom:5px">Stock footage mix (cost control)</div>
+        <input type="range" min="0" max="80" value="40" oninput="this.nextElementSibling.textContent='Stock: '+this.value+'% → $'+((0.67-(this.value*.005)).toFixed(2))+'/video'"/>
+        <div style="font-family:var(--ff-mono);font-size:10px;color:var(--t2);margin-top:4px">Stock: 40% → $0.47/video</div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><div class="panel-title">Caption engine</div></div>
+      <div class="panel-body">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:11px;color:var(--t2)">Word-by-word captions</span><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+          <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:11px;color:var(--t2)">Highlight keywords</span><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+          <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:11px;color:var(--t2)">Emoji overlays</span><div class="tog" onclick="this.classList.toggle('on')"></div></div>
+          <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:11px;color:var(--t2)">Auto-translate (ES/FR)</span><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+        </div>
+        <div style="margin-top:12px;font-size:10px;color:var(--t3);font-family:var(--ff-mono);margin-bottom:5px">CAPTION STYLE</div>
+        <select style="width:100%"><option>Bold yellow (viral default)</option><option>White outline</option><option>Minimal gray</option></select>
+        <div style="margin-top:10px;padding:8px;background:rgba(16,217,140,.05);border:1px solid rgba(16,217,140,.15);border-radius:var(--r);font-size:10px;color:var(--t2)">
+          Captions increase retention by 12–18% on average. Always-on recommended.
+        </div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><div class="panel-title">Thumbnail AI</div></div>
+      <div class="panel-body">
+        <div style="background:linear-gradient(135deg,var(--blue-d),var(--violet-d));border:1px solid var(--b2);border-radius:var(--r2);height:80px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;font-size:10px;color:var(--t3)">FLUX 1.1 Preview</div>
+        <div style="font-size:10px;color:var(--t3);font-family:var(--ff-mono);margin-bottom:5px">STYLE</div>
+        <select style="width:100%;margin-bottom:8px"><option>Bold text + face shock</option><option>Minimal with number</option><option>Curiosity gap split</option></select>
+        <div style="font-size:10px;color:var(--t3);font-family:var(--ff-mono);margin-bottom:5px">VARIANTS</div>
+        <input type="range" min="1" max="5" value="3" oninput="this.nextElementSibling.textContent=this.value+' variants @ $'+(this.value*0.04).toFixed(2)"/>
+        <div style="font-family:var(--ff-mono);font-size:10px;color:var(--t2);margin-top:4px">3 variants @ $0.12</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MONETIZATION ══ -->
+<div id="v-monetize" class="view">
+  <div class="stats-row">
+    <div class="stat"><div class="stat-label">Total revenue MTD</div><div class="stat-val" style="color:var(--gold)">$3,241</div><div class="stat-delta up">↑ 28%</div></div>
+    <div class="stat"><div class="stat-label">Revenue per video</div><div class="stat-val" style="color:var(--green)">$13.12</div><div class="stat-delta up">↑ from $9.40</div></div>
+    <div class="stat"><div class="stat-label">ROI</div><div class="stat-val" style="color:var(--cyan)">23.8×</div><div class="stat-delta nu">$0.55 in → $13.12 out</div></div>
+    <div class="stat"><div class="stat-label">Affiliate CTR</div><div class="stat-val" style="color:var(--violet)">3.4%</div><div class="stat-delta up">↑ 0.8pts</div></div>
+    <div class="stat"><div class="stat-label">Active sponsors</div><div class="stat-val" style="color:var(--orange)">2</div><div class="stat-delta nu">3 in negotiation</div></div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head"><div class="panel-title">Revenue streams</div><span class="panel-tag">all channels</span></div>
+    <div class="panel-body">
+      <div class="mono-grid">
+        <div class="mono-card">
+          <div class="mono-icon">📺</div>
+          <div class="mono-name">Ad revenue (RPM)</div>
+          <div class="mono-rev">$1,840</div>
+          <div class="mono-desc">YouTube Partner Program. Finance CPM avg $18–$40. Shorts RPM lower but volume compensates.</div>
+          <div class="mono-status mono-on">✓ Active</div>
+        </div>
+        <div class="mono-card">
+          <div class="mono-icon">🔗</div>
+          <div class="mono-name">Affiliate links</div>
+          <div class="mono-rev">$940</div>
+          <div class="mono-desc">Auto-injected in descriptions. Finance tools (20–40% commission). AI SaaS tools. Pinned first comment.</div>
+          <div class="mono-status mono-on">✓ Active</div>
+        </div>
+        <div class="mono-card">
+          <div class="mono-icon">🤝</div>
+          <div class="mono-name">Sponsorships</div>
+          <div class="mono-rev">$461</div>
+          <div class="mono-desc">Embedded 5s sponsor mentions auto-scripted by Claude. Finance and AI tool brands pay $200–$500/video.</div>
+          <div class="mono-status mono-on">✓ 2 active</div>
+        </div>
+        <div class="mono-card">
+          <div class="mono-icon">🛒</div>
+          <div class="mono-name">Digital products</div>
+          <div class="mono-rev">$0</div>
+          <div class="mono-desc">Sell PDF cheat sheets, notion templates, or mini-courses. High margin. CTA drives to Gumroad/Lemon Squeezy.</div>
+          <div class="mono-status mono-setup">⚙ Setup needed</div>
+        </div>
+        <div class="mono-card">
+          <div class="mono-icon">💎</div>
+          <div class="mono-name">Channel memberships</div>
+          <div class="mono-rev">$0</div>
+          <div class="mono-desc">YouTube + TikTok memberships. Requires 1K+ subscribers. Unlocks at 10K. Recurring MRR potential.</div>
+          <div class="mono-status mono-off">— Not yet</div>
+        </div>
+        <div class="mono-card">
+          <div class="mono-icon">📧</div>
+          <div class="mono-name">Email list growth</div>
+          <div class="mono-rev">$0</div>
+          <div class="mono-desc">Funnel views → email list with lead magnet CTA. Email list monetizes at 10–30× per subscriber vs ad revenue.</div>
+          <div class="mono-status mono-setup">⚙ Setup needed</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="panel">
+      <div class="panel-head"><div class="panel-title">Affiliate pipeline</div><span class="panel-tag">auto-inject mode</span></div>
+      <div class="panel-body">
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:var(--s2);border-radius:var(--r);border:1px solid var(--b1)">
+            <div><div style="font-size:11px;font-weight:500">TradingView</div><div style="font-size:10px;color:var(--t3)">Finance niche · 30% commission</div></div>
+            <div style="text-align:right"><div style="font-family:var(--ff-mono);font-size:12px;color:var(--gold)">$284/mo</div><div class="mono-status mono-on" style="margin-top:3px">✓ Active</div></div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:var(--s2);border-radius:var(--r);border:1px solid var(--b1)">
+            <div><div style="font-size:11px;font-weight:500">Notion (affiliate)</div><div style="font-size:10px;color:var(--t3)">AI Tools niche · 20% commission</div></div>
+            <div style="text-align:right"><div style="font-family:var(--ff-mono);font-size:12px;color:var(--gold)">$190/mo</div><div class="mono-status mono-on" style="margin-top:3px">✓ Active</div></div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:var(--s2);border-radius:var(--r);border:1px solid var(--b1)">
+            <div><div style="font-size:11px;font-weight:500">Hostinger</div><div style="font-size:10px;color:var(--t3)">All niches · flat $60/sale</div></div>
+            <div style="text-align:right"><div style="font-family:var(--ff-mono);font-size:12px;color:var(--gold)">$120/mo</div><div class="mono-status mono-on" style="margin-top:3px">✓ Active</div></div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:var(--s2);border-radius:var(--r);border:1px dashed var(--b2)">
+            <div><div style="font-size:11px;color:var(--t3)">+ Add affiliate partner</div></div>
+            <button class="tb-btn" style="font-size:10px">Add</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><div class="panel-title">Revenue projection</div><span class="panel-tag">12-month model</span></div>
+      <div class="panel-body">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">
+          <div style="background:var(--s2);border-radius:var(--r);padding:10px;text-align:center"><div style="font-family:var(--ff-mono);font-size:18px;color:var(--gold)">$8,200</div><div style="font-size:9px;color:var(--t3);margin-top:3px">Month 3 est.</div></div>
+          <div style="background:var(--s2);border-radius:var(--r);padding:10px;text-align:center"><div style="font-family:var(--ff-mono);font-size:18px;color:var(--gold)">$24,000</div><div style="font-size:9px;color:var(--t3);margin-top:3px">Month 12 est.</div></div>
+        </div>
+        <div style="font-size:10px;color:var(--t3);font-family:var(--ff-mono);margin-bottom:6px">ASSUMPTIONS</div>
+        <div style="display:flex;flex-direction:column;gap:5px;font-size:11px;color:var(--t2)">
+          <div style="display:flex;justify-content:space-between"><span>Videos/day</span><span style="font-family:var(--ff-mono)">10–15</span></div>
+          <div style="display:flex;justify-content:space-between"><span>Channels</span><span style="font-family:var(--ff-mono)">6</span></div>
+          <div style="display:flex;justify-content:space-between"><span>Avg views/video growth</span><span style="font-family:var(--ff-mono)">+12%/mo</span></div>
+          <div style="display:flex;justify-content:space-between"><span>Revenue sources</span><span style="font-family:var(--ff-mono)">ads + aff + spon</span></div>
+        </div>
+        <div style="margin-top:10px;padding:8px 10px;background:rgba(16,217,140,.05);border:1px solid rgba(16,217,140,.15);border-radius:var(--r);font-size:10px;color:var(--t2)">
+          At 15 videos/day across 6 niches, $10K/month is achievable by month 4 with Finance + AI Tools leading.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ NICHE CHANNELS ══ -->
+<div id="v-niches" class="view">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+    <div><div style="font-family:var(--ff-head);font-size:14px;font-weight:700">Niche channels</div><div style="font-size:11px;color:var(--t3);margin-top:2px">One pipeline per channel — isolated voice, topic filter, schedule, monetization</div></div>
+    <button class="tb-btn accent">+ New channel</button>
+  </div>
+  <div class="niche-cards" id="niche-cards"></div>
+</div>
+
+<!-- ══ A/B HOOK TESTS ══ -->
+<div id="v-abtests" class="view">
+  <div class="stats-row">
+    <div class="stat"><div class="stat-label">Tests running</div><div class="stat-val" style="color:var(--t1)">3</div><div class="stat-delta nu">2 concluded</div></div>
+    <div class="stat"><div class="stat-label">Best hook lift</div><div class="stat-val" style="color:var(--green)">+31%</div><div class="stat-delta up">vs control</div></div>
+    <div class="stat"><div class="stat-label">Avg test duration</div><div class="stat-val" style="color:var(--t1)">48h</div><div class="stat-delta nu">before significance</div></div>
+    <div class="stat"><div class="stat-label">Winners promoted</div><div class="stat-val" style="color:var(--gold)">8</div><div class="stat-delta up">to hook library</div></div>
+    <div class="stat"><div class="stat-label">Retention gain</div><div class="stat-val" style="color:var(--green)">+9pts</div><div class="stat-delta up">from A/B learnings</div></div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:12px" id="ab-tests-list"></div>
+</div>
+
+<!-- ══ SCHEDULE ══ -->
+<div id="v-schedule" class="view">
+  <div class="stats-row">
+    <div class="stat"><div class="stat-label">Scheduled today</div><div class="stat-val" style="color:var(--t1)">12</div><div class="stat-delta nu">across 4 platforms</div></div>
+    <div class="stat"><div class="stat-label">Next post</div><div class="stat-val" style="color:var(--green);font-size:14px">2:00 PM</div><div class="stat-delta nu">Finance · YT Shorts</div></div>
+    <div class="stat"><div class="stat-label">Best time (YT)</div><div class="stat-val" style="color:var(--t1);font-size:14px">2–4 PM</div><div class="stat-delta up">EST weekdays</div></div>
+    <div class="stat"><div class="stat-label">Best time (TikTok)</div><div class="stat-val" style="color:var(--t1);font-size:14px">7–9 PM</div><div class="stat-delta up">local timezone</div></div>
+    <div class="stat"><div class="stat-label">Posts this week</div><div class="stat-val" style="color:var(--gold)">68</div><div class="stat-delta up">all platforms</div></div>
+  </div>
+  <div class="panel">
+    <div class="panel-head"><div class="panel-title">Today's publish queue</div><span class="panel-tag">optimal times</span></div>
+    <div class="panel-body" style="padding:0">
+      <table class="qtable">
+        <thead><tr><th>Time</th><th>Title</th><th>Niche</th><th>Platform</th><th>Est. views</th><th>Affiliate</th><th>Status</th></tr></thead>
+        <tbody id="schedule-table"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══ REVENUE TRACKER ══ -->
+<div id="v-revenue" class="view">
+  <div class="stats-row">
+    <div class="stat"><div class="stat-label">Today</div><div class="stat-val" style="color:var(--gold)">$182</div><div class="stat-delta up">↑ 14%</div></div>
+    <div class="stat"><div class="stat-label">This week</div><div class="stat-val" style="color:var(--gold)">$463</div><div class="stat-delta up">↑ 22%</div></div>
+    <div class="stat"><div class="stat-label">This month</div><div class="stat-val" style="color:var(--gold)">$3,241</div><div class="stat-delta up">↑ 28%</div></div>
+    <div class="stat"><div class="stat-label">Best day ever</div><div class="stat-val" style="color:var(--green)">$612</div><div class="stat-delta nu">Mar 14, Finance</div></div>
+    <div class="stat"><div class="stat-label">Run rate (annual)</div><div class="stat-val" style="color:var(--cyan)">$38.9K</div><div class="stat-delta up">↑ trending</div></div>
+  </div>
+  <div class="two-col">
+    <div class="panel">
+      <div class="panel-head"><div class="panel-title">Revenue by source</div></div>
+      <div class="panel-body">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div class="plat-row"><div class="plat-name">Ad revenue</div><div class="plat-bar-wrap"><div class="plat-bar-fill" style="width:57%;background:var(--gold)"></div></div><div class="plat-rev" style="color:var(--gold)">$1,840</div></div>
+          <div class="plat-row"><div class="plat-name">Affiliates</div><div class="plat-bar-wrap"><div class="plat-bar-fill" style="width:29%;background:var(--orange)"></div></div><div class="plat-rev" style="color:var(--gold)">$940</div></div>
+          <div class="plat-row"><div class="plat-name">Sponsorships</div><div class="plat-bar-wrap"><div class="plat-bar-fill" style="width:14%;background:var(--violet)"></div></div><div class="plat-rev" style="color:var(--gold)">$461</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><div class="panel-title">Revenue by niche</div></div>
+      <div class="panel-body">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div class="plat-row"><div class="plat-name">Finance</div><div class="plat-bar-wrap"><div class="plat-bar-fill" style="width:48%;background:var(--gold)"></div></div><div class="plat-rev" style="color:var(--gold)">$1,556</div></div>
+          <div class="plat-row"><div class="plat-name">AI Tools</div><div class="plat-bar-wrap"><div class="plat-bar-fill" style="width:30%;background:var(--cyan)"></div></div><div class="plat-rev" style="color:var(--gold)">$972</div></div>
+          <div class="plat-row"><div class="plat-name">Psychology</div><div class="plat-bar-wrap"><div class="plat-bar-fill" style="width:18%;background:var(--violet)"></div></div><div class="plat-rev" style="color:var(--gold)">$583</div></div>
+          <div class="plat-row"><div class="plat-name">History</div><div class="plat-bar-wrap"><div class="plat-bar-fill" style="width:10%;background:var(--blue)"></div></div><div class="plat-rev" style="color:var(--gold)">$130</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ COST OPTIMIZER ══ -->
+<div id="v-costs" class="view">
+  <div class="stats-row">
+    <div class="stat"><div class="stat-label">Cost MTD</div><div class="stat-val" style="color:var(--red)">$187</div><div class="stat-delta up">↓ 18% under budget</div></div>
+    <div class="stat"><div class="stat-label">Per video avg</div><div class="stat-val" style="color:var(--orange)">$0.55</div><div class="stat-delta up">target $0.90</div></div>
+    <div class="stat"><div class="stat-label">ROI</div><div class="stat-val" style="color:var(--green)">17.3×</div><div class="stat-delta up">revenue/cost</div></div>
+    <div class="stat"><div class="stat-label">Biggest cost</div><div class="stat-val" style="color:var(--t1);font-size:14px;font-family:var(--ff-mono)">fal.ai video</div><div class="stat-delta nu">60% of spend</div></div>
+    <div class="stat"><div class="stat-label">Savings vs all-AI</div><div class="stat-val" style="color:var(--green)">$94</div><div class="stat-delta nu">from stock footage mix</div></div>
+  </div>
+  <div class="two-col">
+    <div class="panel">
+      <div class="panel-head"><div class="panel-title">Cost breakdown</div></div>
+      <div class="panel-body">
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <div class="plat-row"><div class="plat-name">fal.ai video</div><div class="plat-bar-wrap"><div class="plat-bar-fill" style="width:60%;background:var(--orange)"></div></div><div class="plat-rev" style="color:var(--red)">$112</div></div>
+          <div class="plat-row"><div class="plat-name">ElevenLabs</div><div class="plat-bar-wrap"><div class="plat-bar-fill" style="width:20%;background:var(--teal,#10d98c)"></div></div><div class="plat-rev" style="color:var(--red)">$38</div></div>
+          <div class="plat-row"><div class="plat-name">Infrastructure</div><div class="plat-bar-wrap"><div class="plat-bar-fill" style="width:13%;background:var(--blue)"></div></div><div class="plat-rev" style="color:var(--red)">$25</div></div>
+          <div class="plat-row"><div class="plat-name">Claude API</div><div class="plat-bar-wrap"><div class="plat-bar-fill" style="width:6%;background:var(--violet)"></div></div><div class="plat-rev" style="color:var(--red)">$12</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><div class="panel-title">Cost optimizations</div></div>
+      <div class="panel-body">
+        <div class="timeline">
+          <div class="tl-item"><div class="tl-dot" style="background:var(--green)"></div><div class="tl-content"><div class="tl-title">40% Pexels stock mix → saves $0.24/video</div><div class="tl-sub">Active · saving $94/month</div></div></div>
+          <div class="tl-item"><div class="tl-dot" style="background:var(--green)"></div><div class="tl-content"><div class="tl-title">Kokoro TTS for bulk voice → 85% cheaper</div><div class="tl-sub">Active · saving $38/month</div></div></div>
+          <div class="tl-item"><div class="tl-dot" style="background:var(--green)"></div><div class="tl-content"><div class="tl-title">Claude Haiku for scripts → 12× cheaper vs Sonnet</div><div class="tl-sub">Active · saving $22/month</div></div></div>
+          <div class="tl-item"><div class="tl-dot" style="background:var(--gold)"></div><div class="tl-content"><div class="tl-title">Batch fal.ai renders → reduce per-request overhead</div><div class="tl-sub">Recommended · est. $15/month savings</div></div></div>
+          <div class="tl-item"><div class="tl-dot" style="background:var(--t3)"></div><div class="tl-content"><div class="tl-title">Cache common intros/outros → reuse assets</div><div class="tl-sub">Not yet active · est. $8/month savings</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /content -->
+</div><!-- /main -->
+</div><!-- /shell -->
+
+<script>
+// ─── NAVIGATION ───
+const pages={
+  dashboard:'Dashboard',viral:'Viral engine',content:'Content studio',
+  monetize:'Monetization',niches:'Niche channels',abtests:'A/B hook tests',
+  schedule:'Publish schedule',revenue:'Revenue tracker',costs:'Cost optimizer'
+};
+function nav(id,btn){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('v-'+id).classList.add('active');
+  document.getElementById('page-title').textContent=pages[id]||id;
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('on'));
+  if(btn)btn.classList.add('on');
+}
+
+// ─── REVENUE CHART ───
+const revData=[{v:320,c:'#f0b429'},{v:480,c:'#f0b429'},{v:612,c:'#f0b429'},{v:390,c:'#f0b429'},{v:510,c:'#f0b429'},{v:463,c:'#f0b429'},{v:182,c:'rgba(240,180,41,.4)'}];
+const chart=document.getElementById('rev-chart');
+const maxV=Math.max(...revData.map(d=>d.v));
+revData.forEach(d=>{
+  const bar=document.createElement('div');
+  bar.className='bar';
+  bar.style.height=(d.v/maxV*100)+'%';
+  bar.style.background=d.c;
+  bar.title='$'+d.v;
+  chart.appendChild(bar);
+});
+
+// ─── HOT QUEUE ───
+const hotQ=[
+  {topic:'"AI replacing finance jobs" — 5 harsh truths',niche:'Finance',score:9.1,rev:'$18–22'},
+  {topic:'"This ChatGPT trick saves 2hrs daily"',niche:'AI Tools',score:8.8,rev:'$12–16'},
+  {topic:'"Dark psychology: 3 tactics used on you"',niche:'Psychology',score:8.5,rev:'$8–11'},
+  {topic:'"Warren Buffett never said this publicly"',niche:'Finance',score:8.2,rev:'$15–20'},
+  {topic:'"The collapse of Rome no one teaches"',niche:'History',score:7.9,rev:'$6–9'},
+  {topic:'"5 free AI tools that feel illegal"',niche:'AI Tools',score:7.8,rev:'$10–14'},
+  {topic:'"Your brain on dopamine — 60 seconds"',niche:'Psychology',score:7.5,rev:'$7–10'},
+];
+const hqBody=document.getElementById('hot-queue');
+hotQ.forEach(r=>{
+  const tr=document.createElement('tr');
+  const sc=r.score>=9?'v-hot':r.score>=8?'v-good':'v-ok';
+  tr.innerHTML=`<td style="color:var(--t1)">${r.topic}</td><td><span style="font-size:9px;padding:2px 6px;border-radius:3px;background:var(--s3);color:var(--t3);font-family:var(--ff-mono)">${r.niche}</span></td><td><span class="viral-badge ${sc}">${r.score}</span></td><td style="color:var(--gold);font-family:var(--ff-mono)">${r.rev}</td><td><button class="tb-btn" style="font-size:9px;padding:3px 8px" onclick="addLog('SCRIPT','Generating: ${r.topic.substring(0,30)}...')">Generate</button></td>`;
+  hqBody.appendChild(tr);
+});
+
+// ─── FULL QUEUE ───
+const fullQ=[
+  {n:1,topic:'"AI replacing finance jobs" — 5 harsh truths',niche:'Finance',score:9.1,hook:'Pattern interrupt',mono:'Affiliate + Sponsor',cpm:'$22'},
+  {n:2,topic:'"ChatGPT trick saves 2 hours daily"',niche:'AI Tools',score:8.8,hook:'Claim + proof',mono:'Affiliate (Notion)',cpm:'$14'},
+  {n:3,topic:'"Dark psychology: 3 tactics used on you"',niche:'Psychology',score:8.5,hook:'Curiosity gap',mono:'Ad revenue',cpm:'$10'},
+  {n:4,topic:'"Warren Buffett never said this"',niche:'Finance',score:8.2,hook:'Open loop',mono:'Affiliate (TradingView)',cpm:'$20'},
+  {n:5,topic:'"Collapse of Rome — untold story"',niche:'History',score:7.9,hook:'Pattern interrupt',mono:'Ad revenue',cpm:'$8'},
+  {n:6,topic:'"5 free AI tools that feel illegal"',niche:'AI Tools',score:7.8,hook:'Hyperbole',mono:'Affiliate (AI tools)',cpm:'$12'},
+  {n:7,topic:'"Your brain on dopamine — 60s"',niche:'Psychology',score:7.5,hook:'Edu + science',mono:'Ad revenue',cpm:'$9'},
+  {n:8,topic:'"Why Japan never runs out of money"',niche:'Finance',score:7.3,hook:'Counterintuitive',mono:'Affiliate + Ad',cpm:'$18'},
+];
+const fqBody=document.getElementById('full-queue');
+fullQ.forEach(r=>{
+  const sc=r.score>=9?'v-hot':r.score>=8?'v-good':'v-ok';
+  const tr=document.createElement('tr');
+  tr.innerHTML=`<td style="font-family:var(--ff-mono);color:var(--t3)">${r.n}</td><td style="color:var(--t1)">${r.topic}</td><td><span style="font-size:9px;padding:2px 5px;border-radius:3px;background:var(--s3);color:var(--t3);font-family:var(--ff-mono)">${r.niche}</span></td><td><span class="viral-badge ${sc}">${r.score}</span></td><td style="color:var(--t3)">${r.hook}</td><td style="color:var(--t3);font-size:10px">${r.mono}</td><td style="font-family:var(--ff-mono);color:var(--gold)">${r.cpm}</td><td><button class="tb-btn" style="font-size:9px;padding:3px 8px" onclick="addLog('SCRIPT','Queued: ${r.topic.substring(0,25)}...')">Queue</button></td>`;
+  fqBody.appendChild(tr);
+});
+
+// ─── HOOK GRID ───
+const hooks=[
+  {type:'Pattern interrupt',text:'"Most people have no idea that..."',ret:'72%',uses:28,w:true},
+  {type:'Warning frame',text:'"If you\'re still doing X, stop immediately"',ret:'68%',uses:14,w:false},
+  {type:'Authority claim',text:'"I tested 50 tools so you don\'t have to"',ret:'64%',uses:9,w:false},
+  {type:'Open loop',text:'"Here\'s what nobody tells you about..."',ret:'61%',uses:21,w:false},
+];
+const hg=document.getElementById('hook-grid');
+hooks.forEach(h=>{
+  const div=document.createElement('div');
+  div.className='hook-card'+(h.w?' winner':'');
+  div.innerHTML=`<div class="hook-type">${h.type}</div><div class="hook-text">${h.text}</div><div class="hook-metrics"><div class="hook-m"><div class="hook-m-label">Retention</div><div class="hook-m-val" style="color:var(--green)">${h.ret}</div></div><div class="hook-m"><div class="hook-m-label">Uses</div><div class="hook-m-val">${h.uses}</div></div></div><div class="hook-bar"><div class="hook-bar-fill" style="width:${h.ret};background:${h.w?'var(--gold)':'var(--green)'}"></div></div>`;
+  hg.appendChild(div);
+});
+
+// ─── SCORE METERS ───
+function buildScoreMeter(id,items){
+  const el=document.getElementById(id);
+  if(!el)return;
+  el.innerHTML='';
+  items.forEach(i=>{
+    const row=document.createElement('div');
+    row.className='score-row';
+    row.innerHTML=`<span class="score-label">${i.l}</span><div class="score-bar-wrap"><div class="score-bar-fill" style="width:${i.v*10}%;background:${i.c}"></div></div><span class="score-num">${i.v}</span>`;
+    el.appendChild(row);
+  });
+}
+buildScoreMeter('score-meter',[
+  {l:'Search volume spike',v:9.2,c:'var(--gold)'},{l:'Social engagement',v:8.7,c:'var(--gold)'},
+  {l:'Niche match score',v:9.0,c:'var(--green)'},{l:'Competition level',v:7.1,c:'var(--orange)'},
+  {l:'Monetization fit',v:8.5,c:'var(--green)'},{l:'Trend recency',v:9.4,c:'var(--gold)'},
+]);
+buildScoreMeter('content-score-meter',[
+  {l:'Hook strength',v:9.1,c:'var(--gold)'},{l:'Retention prediction',v:8.4,c:'var(--green)'},
+  {l:'Comment bait',v:8.8,c:'var(--green)'},{l:'Save-worthiness',v:7.6,c:'var(--orange)'},
+  {l:'Share probability',v:8.2,c:'var(--green)'},{l:'CPM niche fit',v:9.0,c:'var(--gold)'},
+]);
+
+// ─── NICHE CARDS ───
+const niches=[
+  {name:'Finance & money',health:'Strong',hc:'var(--green)',hbg:'rgba(16,217,140,.1)',views:'482K',rev:'$1,556',cpm:'$22',videos:84,bar:82,color:'var(--gold)',tags:['YouTube','TikTok','AdSense','TradingView aff.']},
+  {name:'AI & tech tools',health:'Strong',hc:'var(--green)',hbg:'rgba(16,217,140,.1)',views:'341K',rev:'$972',cpm:'$14',videos:63,bar:68,color:'var(--cyan)',tags:['YouTube','LinkedIn','Notion aff.']},
+  {name:'Psychology',health:'Growing',hc:'var(--gold)',hbg:'rgba(240,180,41,.1)',views:'218K',rev:'$583',cpm:'$10',videos:41,bar:55,color:'var(--violet)',tags:['TikTok','Instagram','Ad revenue']},
+  {name:'History & facts',health:'Growing',hc:'var(--gold)',hbg:'rgba(240,180,41,.1)',views:'177K',rev:'$130',cpm:'$8',videos:38,bar:44,color:'var(--blue)',tags:['YouTube','Facebook','Ad revenue']},
+  {name:'Health & fitness',health:'New',hc:'var(--orange)',hbg:'rgba(255,124,58,.08)',views:'142K',rev:'$0',cpm:'$14',videos:21,bar:28,color:'var(--green)',tags:['Instagram','TikTok','Supplement aff.']},
+  {name:'Travel & geo',health:'New',hc:'var(--orange)',hbg:'rgba(255,124,58,.08)',views:'64K',rev:'$0',cpm:'$7',videos:12,bar:16,color:'var(--orange)',tags:['Instagram','Reels','Ad revenue']},
+];
+const nc=document.getElementById('niche-cards');
+niches.forEach((n,i)=>{
+  const div=document.createElement('div');
+  div.className='nc'+(i===0?' active':'');
+  div.innerHTML=`<div class="nc-head"><div class="nc-name">${n.name}</div><span class="nc-health" style="background:${n.hbg};color:${n.hc}">${n.health}</span></div><div class="nc-stats"><div class="nc-stat"><div class="nc-stat-label">Views</div><div class="nc-stat-val" style="color:${n.color}">${n.views}</div></div><div class="nc-stat"><div class="nc-stat-label">Revenue</div><div class="nc-stat-val" style="color:var(--gold)">${n.rev}</div></div><div class="nc-stat"><div class="nc-stat-label">CPM</div><div class="nc-stat-val">${n.cpm}</div></div><div class="nc-stat"><div class="nc-stat-label">Videos</div><div class="nc-stat-val">${n.videos}</div></div></div><div class="nc-bar-wrap"><div class="nc-bar" style="width:${n.bar}%;background:${n.color}"></div></div><div class="nc-tags">${n.tags.map(t=>`<span class="nc-tag">${t}</span>`).join('')}</div>`;
+  div.onclick=()=>{document.querySelectorAll('.nc').forEach(c=>c.classList.remove('active'));div.classList.add('active')};
+  nc.appendChild(div);
+});
+
+// ─── A/B TESTS ───
+const abTests=[
+  {
+    topic:'Finance: "5 stocks to buy now"',status:'Running',statusC:'var(--green)',
+    a:{label:'VARIANT A',hook:'"Most investors have no idea these 5 stocks exist — and they\'re already up 40% this year."',ret:'74%',views:'12.4K',saves:'8.2%'},
+    b:{label:'VARIANT B',hook:'"If you invested $1,000 in these 5 stocks 6 months ago, you\'d have $1,420 right now."',ret:'61%',views:'11.8K',saves:'5.4%'},
+    winner:'a'
+  },
+  {
+    topic:'AI Tools: "Claude vs ChatGPT"',status:'Running',statusC:'var(--green)',
+    a:{label:'VARIANT A',hook:'"ChatGPT users are switching to this and nobody\'s talking about it."',ret:'68%',views:'8.2K',saves:'6.8%'},
+    b:{label:'VARIANT B',hook:'"I tested Claude vs ChatGPT for 30 days. The results shocked me."',ret:'71%',views:'9.1K',saves:'7.4%'},
+    winner:'b'
+  },
+  {
+    topic:'Psychology: "Dark psychology tactics"',status:'Concluded',statusC:'var(--t3)',
+    a:{label:'VARIANT A',hook:'"3 dark psychology tricks being used on you right now — without your knowledge."',ret:'78%',views:'28.4K',saves:'11.2%'},
+    b:{label:'VARIANT B',hook:'"Warning: these manipulation tactics are being used on you every single day."',ret:'63%',views:'19.8K',saves:'7.6%'},
+    winner:'a'
+  },
+];
+const abl=document.getElementById('ab-tests-list');
+abTests.forEach(t=>{
+  const wrap=document.createElement('div');
+  wrap.className='panel';
+  wrap.innerHTML=`<div class="panel-head"><div class="panel-title">${t.topic}</div><span class="panel-tag" style="color:${t.statusC}">${t.status}</span></div><div class="panel-body"><div class="ab-wrap"><div class="ab-card"${t.winner==='a'?' style="border-color:var(--gold)"':''}><div class="ab-label">${t.a.label}${t.winner==='a'?' — WINNER':''}</div><div class="ab-hook">${t.a.hook}</div><div class="ab-stats"><div class="ab-stat-box"><div class="ab-stat-val" style="color:var(--green)">${t.a.ret}</div><div class="ab-stat-label">Retention</div></div><div class="ab-stat-box"><div class="ab-stat-val">${t.a.views}</div><div class="ab-stat-label">Views</div></div><div class="ab-stat-box"><div class="ab-stat-val">${t.a.saves}</div><div class="ab-stat-label">Saves</div></div></div>${t.winner==='a'?'<div class="ab-winner-tag">↑ Winner — promoting to hook library</div>':''}</div><div class="ab-card"${t.winner==='b'?' style="border-color:var(--gold)"':''}><div class="ab-label">${t.b.label}${t.winner==='b'?' — WINNER':''}</div><div class="ab-hook">${t.b.hook}</div><div class="ab-stats"><div class="ab-stat-box"><div class="ab-stat-val" style="color:${t.winner==='b'?'var(--green)':'var(--orange)'}">${t.b.ret}</div><div class="ab-stat-label">Retention</div></div><div class="ab-stat-box"><div class="ab-stat-val">${t.b.views}</div><div class="ab-stat-label">Views</div></div><div class="ab-stat-box"><div class="ab-stat-val">${t.b.saves}</div><div class="ab-stat-label">Saves</div></div></div>${t.winner==='b'?'<div class="ab-winner-tag">↑ Winner — promoting to hook library</div>':''}</div></div></div>`;
+  abl.appendChild(wrap);
+});
+
+// ─── SCHEDULE TABLE ───
+const schedItems=[
+  {time:'9:00 AM',title:'"5 stocks to buy this week"',niche:'Finance',plat:'YouTube Shorts',views:'18–30K',aff:'TradingView',status:'Published'},
+  {time:'10:30 AM',title:'"ChatGPT vs Claude — honest take"',niche:'AI Tools',plat:'TikTok',views:'12–20K',aff:'Notion',status:'Published'},
+  {time:'12:00 PM',title:'"Dark psychology: 3 social tricks"',niche:'Psychology',plat:'Instagram Reels',views:'8–14K',aff:'—',status:'Published'},
+  {time:'2:00 PM',title:'"5 AI tools replacing your job"',niche:'AI Tools',plat:'YouTube Shorts',views:'22–40K',aff:'—',status:'Scheduled'},
+  {time:'3:30 PM',title:'"Rome fell for THIS reason"',niche:'History',plat:'Facebook Reels',views:'6–10K',aff:'—',status:'Scheduled'},
+  {time:'5:00 PM',title:'"Passive income: the real math"',niche:'Finance',plat:'TikTok',views:'14–24K',aff:'Hostinger',status:'Scheduled'},
+  {time:'7:00 PM',title:'"Stoicism in 60 seconds"',niche:'Psychology',plat:'YouTube Shorts',views:'10–18K',aff:'—',status:'Queued'},
+  {time:'8:30 PM',title:'"This AI writes better than you"',niche:'AI Tools',plat:'Instagram Reels',views:'8–15K',aff:'Notion',status:'Queued'},
+];
+const st=document.getElementById('schedule-table');
+schedItems.forEach(r=>{
+  const sc=r.status==='Published'?'var(--green)':r.status==='Scheduled'?'var(--gold)':'var(--t3)';
+  const tr=document.createElement('tr');
+  tr.innerHTML=`<td style="font-family:var(--ff-mono);color:var(--t3)">${r.time}</td><td style="color:var(--t1)">${r.title}</td><td><span style="font-size:9px;padding:2px 5px;border-radius:3px;background:var(--s3);color:var(--t3);font-family:var(--ff-mono)">${r.niche}</span></td><td style="color:var(--t2)">${r.plat}</td><td style="font-family:var(--ff-mono);font-size:10px;color:var(--t3)">${r.views}</td><td style="font-size:10px;color:var(--t3)">${r.aff}</td><td><span style="font-size:9px;padding:2px 7px;border-radius:3px;font-family:var(--ff-mono);color:${sc};background:${sc}1a">${r.status}</span></td>`;
+  st.appendChild(tr);
+});
+
+// ─── LOG ───
+const logEl=document.getElementById('log-body');
+const logMsgs=[
+  ['TREND','Scraped 182 topics — Reddit r/finance'],
+  ['SCORE','"AI jobs 2025" scored 9.1 — priority queue'],
+  ['SCRIPT','Generated: "5 AI tools replacing jobs" — 318 words'],
+  ['VOICE','Kokoro TTS: 52s render — $0.018'],
+  ['VIDEO','WAN 2.1: 3×5s clips — 3m12s · $0.30'],
+  ['THUMB','FLUX: 3 thumbnail variants — $0.12'],
+  ['EDIT','Assembly: aitools_jobs_v1.mp4 — 47MB · 1m38s'],
+  ['POST','Scheduled YT + TikTok + IG → 2:00 PM EST'],
+  ['REV','Finance video #84 — earned $24 in first 6h'],
+  ['AFF','TradingView click from video desc — potential $60'],
+  ['SCORE','"Claude vs GPT" scored 8.8 — queued'],
+  ['TREND','TikTok trend: "passive income 2025" — spiking'],
+];
+let li=0;
+function addLog(tag,msg){
+  const now=new Date();
+  const ts=now.toTimeString().slice(0,8);
+  const colors={TREND:'#ff7c3a',SCORE:'#ff7c3a',SCRIPT:'#f0b429',VOICE:'#10d98c',VIDEO:'#10d98c',THUMB:'#00d4ff',EDIT:'#9d6fff',POST:'#9d6fff',REV:'#f0b429',AFF:'#f0b429',SYS:'#5c5d68'};
+  const div=document.createElement('div');
+  div.className='log-line';
+  div.innerHTML=`<span class="l-ts">${ts}</span><span class="l-tag" style="background:${colors[tag]||'#3a3b44'}1a;color:${colors[tag]||'#5c5d68'}">${tag}</span><span class="l-msg">${msg}</span>`;
+  logEl.prepend(div);
+  if(logEl.children.length>40)logEl.removeChild(logEl.lastChild);
+}
+logMsgs.slice(0,8).forEach(m=>addLog(m[0],m[1]));
+setInterval(()=>{const m=logMsgs[li%logMsgs.length];addLog(m[0],m[1]);li++;},4500);
+
+// ─── RUN BTN ───
+function triggerRun(){
+  const btn=document.getElementById('run-btn');
+  btn.textContent='⟳ Running...';
+  btn.style.background='var(--green)';
+  addLog('SYS','Pipeline started — full cycle initiated');
+  setTimeout(()=>{btn.textContent='▶ Run pipeline';btn.style.background='';},3200);
+}
+function generateAll(){addLog('SCRIPT','Queuing all ideas with score ≥8.0 — 5 scripts')}
+</script>
+</body>
+</html>

@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ViralFlow — Implementation Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Epilogue:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0a0b0e;
+  --ink2:#12141a;
+  --ink3:#1a1d26;
+  --ink4:#232733;
+  --rule:#2c3040;
+  --rule2:#3a3f52;
+  --dim:#4a5068;
+  --muted:#7c859e;
+  --body:#b8bdd0;
+  --bright:#e8eaf2;
+  --white:#f4f5fa;
+  --lime:#c8f135;
+  --lime-d:#1e2b05;
+  --amber:#ffb830;
+  --amber-d:#2d2005;
+  --sky:#38d9f5;
+  --sky-d:#02242d;
+  --rose:#ff4f6e;
+  --rose-d:#2d0510;
+  --violet:#a855f7;
+  --violet-d:#1a0b2e;
+  --green:#22c55e;
+  --green-d:#052010;
+  --ff-head:'Bebas Neue',sans-serif;
+  --ff-body:'Epilogue',sans-serif;
+  --ff-mono:'JetBrains Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--ink);
+  color:var(--body);
+  font-family:var(--ff-body);
+  font-size:13px;
+  line-height:1.6;
+  overflow-x:hidden;
+}
+::-webkit-scrollbar{width:3px;height:3px}
+::-webkit-scrollbar-thumb{background:var(--rule2)}
+
+/* ══ HEADER ══ */
+.hero{
+  padding:48px 48px 36px;
+  border-bottom:1px solid var(--rule);
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:'';
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 600px 300px at 80% 50%,rgba(200,241,53,.04),transparent),
+    radial-gradient(ellipse 400px 400px at 20% 80%,rgba(56,217,245,.03),transparent);
+  pointer-events:none;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--ff-mono);font-size:10px;
+  padding:5px 12px;border-radius:2px;
+  border:1px solid var(--rule2);
+  color:var(--lime);background:var(--lime-d);
+  margin-bottom:20px;letter-spacing:.08em;
+}
+.hero-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--lime);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.hero h1{
+  font-family:var(--ff-head);
+  font-size:clamp(52px,7vw,96px);
+  line-height:.92;
+  color:var(--white);
+  letter-spacing:.01em;
+  margin-bottom:10px;
+}
+.hero h1 span{color:var(--lime)}
+.hero-sub{font-size:15px;color:var(--muted);max-width:560px;line-height:1.6;margin-bottom:24px}
+.hero-stats{display:flex;gap:32px;flex-wrap:wrap}
+.hs{display:flex;flex-direction:column}
+.hs-val{font-family:var(--ff-head);font-size:32px;color:var(--bright);line-height:1}
+.hs-label{font-size:10px;color:var(--dim);font-family:var(--ff-mono);letter-spacing:.08em;margin-top:3px}
+
+/* ══ LAYOUT ══ */
+.page{max-width:1200px;margin:0 auto;padding:0 48px 80px}
+.section{margin-top:56px}
+.section-head{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  border-bottom:1px solid var(--rule);
+  padding-bottom:12px;margin-bottom:24px;
+}
+.section-num{font-family:var(--ff-head);font-size:56px;color:var(--rule2);line-height:1;margin-right:12px}
+.section-title{font-family:var(--ff-head);font-size:28px;color:var(--white);letter-spacing:.02em}
+.section-tag{font-family:var(--ff-mono);font-size:10px;color:var(--dim);letter-spacing:.08em;padding-bottom:4px}
+
+/* ══ PHASE TIMELINE ══ */
+.phases{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative}
+.phases::before{
+  content:'';position:absolute;
+  top:28px;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,var(--rule),var(--rule2),var(--rule));
+}
+.phase{padding:0 16px 0 0;position:relative}
+.phase-dot{
+  width:14px;height:14px;border-radius:50%;
+  border:2px solid var(--rule);
+  background:var(--ink);
+  margin-bottom:16px;position:relative;z-index:1;
+  transition:all .3s;
+}
+.phase.active .phase-dot{background:var(--lime);border-color:var(--lime);box-shadow:0 0 0 4px rgba(200,241,53,.15)}
+.phase.done .phase-dot{background:var(--dim);border-color:var(--dim)}
+.phase-label{font-family:var(--ff-mono);font-size:9px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.phase-name{font-family:var(--ff-head);font-size:20px;color:var(--bright);margin-bottom:4px}
+.phase.active .phase-name{color:var(--lime)}
+.phase-duration{font-size:10px;color:var(--muted);margin-bottom:10px}
+.phase-goal{font-size:11px;color:var(--dim);line-height:1.5}
+.phase-rev{
+  margin-top:10px;font-family:var(--ff-mono);font-size:13px;
+  color:var(--amber);
+}
+
+/* ══ STACK TABLE ══ */
+.stack-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.stack-card{
+  background:var(--ink2);
+  border:1px solid var(--rule);
+  border-radius:4px;padding:16px;
+  transition:border-color .2s;
+  cursor:default;
+}
+.stack-card:hover{border-color:var(--rule2)}
+.stack-layer{font-family:var(--ff-mono);font-size:9px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+.stack-name{font-size:13px;font-weight:600;color:var(--bright);margin-bottom:4px}
+.stack-tool{font-family:var(--ff-mono);font-size:11px;margin-bottom:2px}
+.stack-why{font-size:11px;color:var(--dim);margin-top:6px;line-height:1.5}
+.stack-cost{font-family:var(--ff-mono);font-size:10px;margin-top:8px;padding-top:8px;border-top:1px solid var(--rule)}
+
+/* ══ TASK LIST ══ */
+.task-phases{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.task-phase-block{background:var(--ink2);border:1px solid var(--rule);border-radius:4px;overflow:hidden}
+.tpb-head{
+  padding:12px 16px;
+  border-bottom:1px solid var(--rule);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.tpb-title{font-family:var(--ff-head);font-size:16px;letter-spacing:.02em}
+.tpb-week{font-family:var(--ff-mono);font-size:9px;color:var(--dim);letter-spacing:.08em}
+.task-list{list-style:none;padding:12px 16px;display:flex;flex-direction:column;gap:6px}
+.task-item{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:8px 10px;border-radius:3px;
+  border:1px solid transparent;
+  transition:all .15s;cursor:pointer;
+}
+.task-item:hover{background:var(--ink3);border-color:var(--rule)}
+.task-item.done{opacity:.5}
+.task-check{
+  width:14px;height:14px;border-radius:2px;
+  border:1px solid var(--rule2);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  margin-top:1px;transition:all .15s;
+}
+.task-item.done .task-check{background:var(--dim);border-color:var(--dim)}
+.task-item.done .task-check::after{content:'✓';font-size:9px;color:var(--ink)}
+.task-text{font-size:12px;color:var(--body);line-height:1.4;flex:1}
+.task-item.done .task-text{text-decoration:line-through;color:var(--dim)}
+.task-tag{font-family:var(--ff-mono);font-size:9px;padding:1px 5px;border-radius:2px;margin-left:auto;flex-shrink:0}
+
+/* ══ API SETUP ══ */
+.api-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.api-card{
+  background:var(--ink2);border:1px solid var(--rule);border-radius:4px;
+  padding:14px 16px;display:flex;gap:14px;align-items:flex-start;
+}
+.api-num{
+  font-family:var(--ff-head);font-size:28px;
+  color:var(--rule2);line-height:1;flex-shrink:0;width:28px;
+}
+.api-content{flex:1}
+.api-name{font-size:13px;font-weight:600;color:var(--bright);margin-bottom:3px}
+.api-url{font-family:var(--ff-mono);font-size:10px;color:var(--sky);margin-bottom:5px}
+.api-steps{display:flex;flex-direction:column;gap:3px}
+.api-step{font-size:11px;color:var(--dim);display:flex;gap:6px;align-items:flex-start}
+.api-step::before{content:'→';color:var(--rule2);flex-shrink:0}
+.api-cost{font-family:var(--ff-mono);font-size:10px;color:var(--amber);margin-top:6px}
+
+/* ══ CODE BLOCKS ══ */
+.code-section{margin-top:20px}
+.code-label{
+  font-family:var(--ff-mono);font-size:9px;color:var(--dim);
+  letter-spacing:.1em;text-transform:uppercase;
+  margin-bottom:8px;display:flex;align-items:center;gap:8px;
+}
+.code-label::after{content:'';flex:1;height:1px;background:var(--rule)}
+.code-block{
+  background:var(--ink2);border:1px solid var(--rule);border-radius:4px;
+  padding:16px;font-family:var(--ff-mono);font-size:11px;
+  line-height:1.7;overflow-x:auto;white-space:pre;
+  color:var(--body);
+}
+.code-block .k{color:var(--violet)}
+.code-block .s{color:var(--lime)}
+.code-block .n{color:var(--sky)}
+.code-block .c{color:var(--dim)}
+.code-block .v{color:var(--amber)}
+
+/* ══ MONETIZATION PLAN ══ */
+.mono-timeline{display:flex;flex-direction:column;gap:0}
+.mono-month{
+  display:grid;
+  grid-template-columns:80px 1fr 200px;
+  gap:0;
+  border-bottom:1px solid var(--rule);
+}
+.mono-month:last-child{border-bottom:none}
+.mm-label{
+  padding:16px 0;
+  border-right:1px solid var(--rule);
+  font-family:var(--ff-head);font-size:18px;
+  color:var(--dim);padding-right:20px;
+  display:flex;align-items:flex-start;
+}
+.mm-content{padding:16px 20px;flex:1}
+.mm-title{font-size:13px;font-weight:600;color:var(--bright);margin-bottom:6px}
+.mm-actions{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:6px}
+.mm-action{
+  font-size:10px;padding:2px 8px;border-radius:2px;
+  border:1px solid var(--rule2);color:var(--muted);
+  font-family:var(--ff-mono);
+}
+.mm-action.key{border-color:rgba(200,241,53,.3);color:var(--lime)}
+.mm-desc{font-size:11px;color:var(--dim);line-height:1.5}
+.mm-rev{
+  padding:16px;border-left:1px solid var(--rule);
+  display:flex;flex-direction:column;justify-content:center;
+  align-items:flex-end;
+}
+.mm-rev-val{font-family:var(--ff-head);font-size:28px;color:var(--white);line-height:1}
+.mm-rev-val.highlight{color:var(--lime)}
+.mm-rev-sub{font-size:10px;color:var(--dim);margin-top:3px;font-family:var(--ff-mono)}
+.mm-rev-sources{display:flex;flex-direction:column;gap:2px;margin-top:6px}
+.mm-src{font-size:10px;color:var(--dim);text-align:right}
+.mm-src span{color:var(--muted);font-family:var(--ff-mono)}
+
+/* ══ COST TABLE ══ */
+.cost-tbl{width:100%;border-collapse:collapse}
+.cost-tbl th{
+  font-family:var(--ff-mono);font-size:9px;color:var(--dim);
+  letter-spacing:.1em;text-transform:uppercase;
+  padding:8px 12px;border-bottom:1px solid var(--rule);text-align:left;
+}
+.cost-tbl td{padding:9px 12px;border-bottom:1px solid rgba(44,48,64,.5);font-size:12px;color:var(--body)}
+.cost-tbl tbody tr:hover td{background:var(--ink2)}
+.cost-tbl tbody tr:last-child td{border-bottom:none}
+.cost-tbl .mono{font-family:var(--ff-mono);font-size:11px}
+.cost-tbl .highlight-row td{color:var(--lime);font-weight:600}
+
+/* ══ WARNING/TIP BOXES ══ */
+.tip{
+  background:var(--lime-d);border:1px solid rgba(200,241,53,.2);
+  border-left:3px solid var(--lime);border-radius:0 4px 4px 0;
+  padding:12px 16px;font-size:12px;color:var(--body);line-height:1.6;
+  margin-top:12px;
+}
+.tip strong{color:var(--lime)}
+.warn{
+  background:var(--rose-d);border:1px solid rgba(255,79,110,.2);
+  border-left:3px solid var(--rose);border-radius:0 4px 4px 0;
+  padding:12px 16px;font-size:12px;color:var(--body);line-height:1.6;
+  margin-top:12px;
+}
+.warn strong{color:var(--rose)}
+.info{
+  background:var(--sky-d);border:1px solid rgba(56,217,245,.15);
+  border-left:3px solid var(--sky);border-radius:0 4px 4px 0;
+  padding:12px 16px;font-size:12px;color:var(--body);line-height:1.6;
+  margin-top:12px;
+}
+.info strong{color:var(--sky)}
+
+/* ══ N8N WORKFLOW ══ */
+.workflow-nodes{display:flex;align-items:center;gap:0;overflow-x:auto;padding:20px 0;flex-wrap:nowrap}
+.wf-node{
+  background:var(--ink2);border:1px solid var(--rule);border-radius:4px;
+  padding:10px 14px;flex-shrink:0;width:130px;text-align:center;
+  transition:border-color .2s;
+}
+.wf-node:hover{border-color:var(--rule2)}
+.wf-node.trigger{border-color:rgba(200,241,53,.3);background:var(--lime-d)}
+.wf-node.output{border-color:rgba(56,217,245,.3);background:var(--sky-d)}
+.wf-icon{font-size:18px;margin-bottom:5px}
+.wf-name{font-size:10px;font-weight:600;color:var(--bright);margin-bottom:2px}
+.wf-tool{font-family:var(--ff-mono);font-size:9px;color:var(--dim)}
+.wf-arrow{width:28px;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:var(--rule2);font-size:14px}
+
+/* ══ CHECKLIST TRACKER ══ */
+.progress-track{
+  background:var(--ink2);border:1px solid var(--rule);border-radius:4px;
+  padding:16px;margin-bottom:16px;
+}
+.pt-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.pt-title{font-size:13px;font-weight:600;color:var(--bright)}
+.pt-pct{font-family:var(--ff-head);font-size:20px;color:var(--lime)}
+.pt-bar{height:3px;background:var(--rule);border-radius:2px;overflow:hidden;margin-bottom:12px}
+.pt-fill{height:100%;border-radius:2px;background:var(--lime);transition:width .5s ease}
+.pt-items{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.pt-item{
+  display:flex;align-items:center;gap:8px;
+  font-size:11px;color:var(--dim);
+  padding:6px 8px;border-radius:3px;
+  cursor:pointer;transition:all .12s;
+  border:1px solid transparent;
+}
+.pt-item:hover{background:var(--ink3);border-color:var(--rule);color:var(--body)}
+.pt-item.done{color:var(--muted)}
+.pt-item.done .pt-cb{background:rgba(200,241,53,.2);border-color:var(--lime)}
+.pt-item.done .pt-cb::after{content:'✓';font-size:8px;color:var(--lime)}
+.pt-cb{width:13px;height:13px;border-radius:2px;border:1px solid var(--rule2);flex-shrink:0;display:flex;align-items:center;justify-content:center}
+
+/* ══ ANIMATIONS ══ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.section{animation:fadeUp .5s ease both}
+.section:nth-child(2){animation-delay:.1s}
+.section:nth-child(3){animation-delay:.2s}
+.section:nth-child(4){animation-delay:.3s}
+
+/* ══ FOOTER ══ */
+.footer{
+  padding:32px 48px;
+  border-top:1px solid var(--rule);
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:80px;
+}
+.footer-left{font-family:var(--ff-head);font-size:22px;color:var(--dim)}
+.footer-right{font-family:var(--ff-mono);font-size:10px;color:var(--dim);text-align:right}
+
+/* ══ INTERACTIVE TABS ══ */
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--rule);margin-bottom:20px}
+.tab-btn{
+  font-family:var(--ff-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+  padding:8px 16px;border:none;background:transparent;
+  color:var(--dim);cursor:pointer;border-bottom:2px solid transparent;
+  margin-bottom:-1px;transition:all .15s;
+}
+.tab-btn:hover{color:var(--body)}
+.tab-btn.active{color:var(--lime);border-bottom-color:var(--lime)}
+.tab-panel{display:none}.tab-panel.active{display:block}
+
+input[type=range]{-webkit-appearance:none;width:100%;height:2px;background:var(--rule);border-radius:1px;outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:var(--lime);cursor:pointer}
+</style>
+</head>
+<body>
+
+<!-- ══ HERO ══ -->
+<div class="hero">
+  <div class="hero-badge">IMPLEMENTATION PLAN · VERSION 1.0</div>
+  <h1>BUILD.<br><span>LAUNCH.</span><br>EARN.</h1>
+  <p class="hero-sub">A complete step-by-step implementation plan to go from zero to a fully automated viral short video pipeline generating real revenue — in 12 weeks.</p>
+  <div class="hero-stats">
+    <div class="hs"><div class="hs-val">12</div><div class="hs-label">Weeks to full pipeline</div></div>
+    <div class="hs"><div class="hs-val">4</div><div class="hs-label">Build phases</div></div>
+    <div class="hs"><div class="hs-val">$500</div><div class="hs-label">Startup budget</div></div>
+    <div class="hs"><div class="hs-val" style="color:var(--lime)">$10K+</div><div class="hs-label">Month 6 target</div></div>
+  </div>
+</div>
+
+<div class="page">
+
+<!-- ══ PHASE OVERVIEW ══ -->
+<div class="section">
+  <div class="section-head">
+    <div style="display:flex;align-items:flex-end;gap:12px">
+      <div class="section-num">01</div>
+      <div class="section-title">PHASE OVERVIEW</div>
+    </div>
+    <div class="section-tag">12-WEEK ROADMAP</div>
+  </div>
+
+  <div class="phases">
+    <div class="phase active">
+      <div class="phase-dot"></div>
+      <div class="phase-label">Phase 1 · Weeks 1–2</div>
+      <div class="phase-name">FOUNDATION</div>
+      <div class="phase-duration">Account setup · API keys · first pipeline test</div>
+      <div class="phase-goal">Get all accounts created, APIs connected, and produce your first AI-generated video end to end — even if rough.</div>
+      <div class="phase-rev" style="color:var(--dim)">Revenue: $0</div>
+    </div>
+    <div class="phase">
+      <div class="phase-dot"></div>
+      <div class="phase-label">Phase 2 · Weeks 3–5</div>
+      <div class="phase-name">AUTOMATION</div>
+      <div class="phase-duration">n8n workflows · script templates · auto-publish</div>
+      <div class="phase-goal">Build the full n8n workflow that runs from trend detection to published video with zero manual steps.</div>
+      <div class="phase-rev">Revenue: $50–200/mo</div>
+    </div>
+    <div class="phase">
+      <div class="phase-dot"></div>
+      <div class="phase-label">Phase 3 · Weeks 6–9</div>
+      <div class="phase-name">SCALE</div>
+      <div class="phase-duration">Multi-niche · A/B hooks · monetization layer</div>
+      <div class="phase-goal">Expand to 3+ niche channels. Add affiliate links, A/B testing, and feedback loop. Increase to 10+ videos/day.</div>
+      <div class="phase-rev" style="color:var(--amber)">Revenue: $500–2K/mo</div>
+    </div>
+    <div class="phase">
+      <div class="phase-dot"></div>
+      <div class="phase-label">Phase 4 · Weeks 10–12</div>
+      <div class="phase-name">MONETIZE</div>
+      <div class="phase-duration">Sponsorships · digital products · email funnel</div>
+      <div class="phase-goal">Unlock all revenue streams. Add sponsorship pipeline, digital products, and email list capture across all channels.</div>
+      <div class="phase-rev" style="color:var(--lime)">Revenue: $3K–10K/mo</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TECH STACK ══ -->
+<div class="section">
+  <div class="section-head">
+    <div style="display:flex;align-items:flex-end;gap:12px">
+      <div class="section-num">02</div>
+      <div class="section-title">FULL TECH STACK</div>
+    </div>
+    <div class="section-tag">EVERY TOOL YOU NEED</div>
+  </div>
+
+  <div class="stack-grid">
+    <div class="stack-card">
+      <div class="stack-layer">Layer 1 · Ideation</div>
+      <div class="stack-name">Trend Detection</div>
+      <div class="stack-tool" style="color:var(--sky)">google-trends-api (npm)</div>
+      <div class="stack-tool" style="color:var(--sky)">Reddit API (free)</div>
+      <div class="stack-tool" style="color:var(--sky)">Apify TikTok Scraper</div>
+      <div class="stack-tool" style="color:var(--sky)">YouTube Data API v3</div>
+      <div class="stack-why">Pull trending topics from 4 sources every 2 hours. Score each by engagement + search volume + niche fit.</div>
+      <div class="stack-cost" style="color:var(--amber)">Cost: $0–20/mo · Apify has free tier</div>
+    </div>
+    <div class="stack-card">
+      <div class="stack-layer">Layer 2 · Script</div>
+      <div class="stack-name">AI Scriptwriting</div>
+      <div class="stack-tool" style="color:var(--violet)">Claude Haiku 3.5 (bulk)</div>
+      <div class="stack-tool" style="color:var(--violet)">Claude Sonnet 4.5 (hooks)</div>
+      <div class="stack-tool" style="color:var(--violet)">Custom system prompts</div>
+      <div class="stack-why">Claude Haiku at $0.80/1M tokens for bulk 800-token scripts. Sonnet only for the first 3s hook on high-score ideas.</div>
+      <div class="stack-cost" style="color:var(--amber)">Cost: ~$4–15/mo at 10 videos/day</div>
+    </div>
+    <div class="stack-card">
+      <div class="stack-layer">Layer 3 · Voice</div>
+      <div class="stack-name">Voice Synthesis</div>
+      <div class="stack-tool" style="color:var(--lime)">ElevenLabs API (hero)</div>
+      <div class="stack-tool" style="color:var(--lime)">fal.ai Kokoro TTS (bulk)</div>
+      <div class="stack-tool" style="color:var(--lime)">Voice cloning per channel</div>
+      <div class="stack-why">ElevenLabs for hero videos (score ≥8). Kokoro for everything else — 85% cheaper, still sounds natural.</div>
+      <div class="stack-cost" style="color:var(--amber)">Cost: ~$30–80/mo depending on volume</div>
+    </div>
+    <div class="stack-card">
+      <div class="stack-layer">Layer 4 · Video</div>
+      <div class="stack-name">Visual Generation</div>
+      <div class="stack-tool" style="color:var(--rose)">fal.ai Kling 1.6 Pro</div>
+      <div class="stack-tool" style="color:var(--rose)">fal.ai WAN 2.1</div>
+      <div class="stack-tool" style="color:var(--rose)">fal.ai FLUX 1.1 Pro</div>
+      <div class="stack-tool" style="color:var(--rose)">Pexels API (free stock)</div>
+      <div class="stack-why">Hybrid model: 40% Pexels free stock for filler, WAN 2.1 for B-roll, Kling only for hero scenes.</div>
+      <div class="stack-cost" style="color:var(--amber)">Cost: ~$80–200/mo main expense</div>
+    </div>
+    <div class="stack-card">
+      <div class="stack-layer">Layer 5 · Assembly</div>
+      <div class="stack-name">Video Editing Engine</div>
+      <div class="stack-tool" style="color:var(--sky)">FFmpeg (free, self-hosted)</div>
+      <div class="stack-tool" style="color:var(--sky)">fal.ai Whisper (captions)</div>
+      <div class="stack-tool" style="color:var(--sky)">Python moviepy wrapper</div>
+      <div class="stack-why">FFmpeg handles everything: clip stitching, audio sync, word-by-word caption burn, 9:16 resize, platform export.</div>
+      <div class="stack-cost" style="color:var(--amber)">Cost: VPS ~$10–20/mo (Hetzner CX21)</div>
+    </div>
+    <div class="stack-card">
+      <div class="stack-layer">Layer 6 · Orchestration</div>
+      <div class="stack-name">Workflow Automation</div>
+      <div class="stack-tool" style="color:var(--amber)">n8n (self-hosted)</div>
+      <div class="stack-tool" style="color:var(--amber)">Docker on VPS</div>
+      <div class="stack-tool" style="color:var(--amber)">Supabase (database)</div>
+      <div class="stack-why">n8n is the brain — connects every API, handles retry logic, queuing, scheduling, error alerting, logging.</div>
+      <div class="stack-cost" style="color:var(--amber)">Cost: $0 self-hosted / $20 cloud</div>
+    </div>
+    <div class="stack-card">
+      <div class="stack-layer">Layer 7 · Publishing</div>
+      <div class="stack-name">Multi-Platform Upload</div>
+      <div class="stack-tool" style="color:var(--violet)">YouTube Data API v3</div>
+      <div class="stack-tool" style="color:var(--violet)">TikTok Content API</div>
+      <div class="stack-tool" style="color:var(--violet)">Instagram Graph API</div>
+      <div class="stack-tool" style="color:var(--violet)">Publer / Buffer (fallback)</div>
+      <div class="stack-why">Direct API publishing for YouTube and TikTok. Instagram needs Graph API business account. Publer as fallback.</div>
+      <div class="stack-cost" style="color:var(--amber)">Cost: $0 APIs + $15/mo Publer</div>
+    </div>
+    <div class="stack-card">
+      <div class="stack-layer">Layer 8 · Analytics</div>
+      <div class="stack-name">Performance Tracking</div>
+      <div class="stack-tool" style="color:var(--lime)">YouTube Analytics API</div>
+      <div class="stack-tool" style="color:var(--lime)">TikTok Analytics API</div>
+      <div class="stack-tool" style="color:var(--lime)">Supabase (store results)</div>
+      <div class="stack-tool" style="color:var(--lime)">Google Sheets (dashboard)</div>
+      <div class="stack-why">Pull 48h retention data per video. Score it. Feed winners back to ideation queue weights. Auto-learn.</div>
+      <div class="stack-cost" style="color:var(--amber)">Cost: $0 (free APIs)</div>
+    </div>
+    <div class="stack-card">
+      <div class="stack-layer">Layer 9 · Monetization</div>
+      <div class="stack-name">Revenue Layer</div>
+      <div class="stack-tool" style="color:var(--green)">YouTube Partner Program</div>
+      <div class="stack-tool" style="color:var(--green)">Impact.com (affiliates)</div>
+      <div class="stack-tool" style="color:var(--green)">Gumroad (digital products)</div>
+      <div class="stack-tool" style="color:var(--green)">Beehiiv (email list)</div>
+      <div class="stack-why">Stack all 4 revenue streams per channel. Affiliates auto-injected into descriptions. Email list captures 1–3% of viewers.</div>
+      <div class="stack-cost" style="color:var(--lime)">Revenue: your primary income source</div>
+    </div>
+  </div>
+
+  <div class="tip"><strong>Total monthly infrastructure cost at 10 videos/day:</strong> ~$150–280/mo for full AI stack. Drops to ~$80–120/mo with stock footage hybrid. At 5 channels this cost is negligible once revenue kicks in (typically week 6–8).</div>
+</div>
+
+<!-- ══ WEEK-BY-WEEK TASKS ══ -->
+<div class="section">
+  <div class="section-head">
+    <div style="display:flex;align-items:flex-end;gap:12px">
+      <div class="section-num">03</div>
+      <div class="section-title">WEEK-BY-WEEK BUILD PLAN</div>
+    </div>
+    <div class="section-tag">CLICK TO TRACK PROGRESS</div>
+  </div>
+
+  <div class="progress-track">
+    <div class="pt-head">
+      <div class="pt-title">Overall completion</div>
+      <div class="pt-pct" id="overall-pct">0%</div>
+    </div>
+    <div class="pt-bar"><div class="pt-fill" id="overall-bar" style="width:0%"></div></div>
+  </div>
+
+  <div class="task-phases">
+
+    <!-- PHASE 1 -->
+    <div class="task-phase-block">
+      <div class="tpb-head">
+        <div class="tpb-title" style="color:var(--sky)">PHASE 1 — Foundation</div>
+        <div class="tpb-week">Weeks 1–2</div>
+      </div>
+      <ul class="task-list" id="phase1">
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Create Anthropic account → get Claude API key from console.anthropic.com</div><span class="task-tag" style="background:rgba(168,85,247,.1);color:var(--violet)">API</span></li>
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Create fal.ai account → get API key → test Kling and WAN 2.1 video generation</div><span class="task-tag" style="background:rgba(255,79,110,.1);color:var(--rose)">API</span></li>
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Create ElevenLabs account → clone your first voice → test TTS output quality</div><span class="task-tag" style="background:rgba(200,241,53,.1);color:var(--lime)">API</span></li>
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Set up VPS on Hetzner (CX21 · €5/mo) → install Docker, FFmpeg, Python 3.11</div><span class="task-tag" style="background:rgba(56,217,245,.1);color:var(--sky)">INFRA</span></li>
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Install n8n via Docker on VPS → expose on subdomain with SSL (nginx + certbot)</div><span class="task-tag" style="background:rgba(255,184,48,.1);color:var(--amber)">INFRA</span></li>
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Create Supabase project → set up tables: topics, scripts, videos, analytics</div><span class="task-tag" style="background:rgba(56,217,245,.1);color:var(--sky)">DB</span></li>
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Create YouTube channel(s) → apply for API access → get OAuth credentials</div><span class="task-tag" style="background:rgba(255,79,110,.1);color:var(--rose)">CHANNEL</span></li>
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Create TikTok creator account → apply for Content Posting API access</div><span class="task-tag" style="background:rgba(255,79,110,.1);color:var(--rose)">CHANNEL</span></li>
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Write first Claude prompt template for script generation → test manually in API</div><span class="task-tag" style="background:rgba(168,85,247,.1);color:var(--violet)">DEV</span></li>
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Manually produce 1 full test video end-to-end using all APIs — validate quality</div><span class="task-tag" style="background:rgba(200,241,53,.1);color:var(--lime)">TEST</span></li>
+      </ul>
+    </div>
+
+    <!-- PHASE 2 -->
+    <div class="task-phase-block">
+      <div class="tpb-head">
+        <div class="tpb-title" style="color:var(--amber)">PHASE 2 — Automation</div>
+        <div class="tpb-week">Weeks 3–5</div>
+      </div>
+      <ul class="task-list" id="phase2">
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Build n8n node: Google Trends scraper → score topics → save to Supabase</div><span class="task-tag" style="background:rgba(255,184,48,.1);color:var(--amber)">n8n</span></li>
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Build n8n node: Reddit scraper (hot posts) → extract topics → merge with trends</div><span class="task-tag" style="background:rgba(255,184,48,.1);color:var(--amber)">n8n</span></li>
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Build n8n node: Claude script generator → hook + build + CTA → save to Supabase</div><span class="task-tag" style="background:rgba(168,85,247,.1);color:var(--violet)">n8n</span></li>
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Build n8n node: TTS router → ElevenLabs if score≥8 else Kokoro → save .mp3</div><span class="task-tag" style="background:rgba(200,241,53,.1);color:var(--lime)">n8n</span></li>
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Build n8n node: fal.ai video generator → Kling/WAN selection → save clips</div><span class="task-tag" style="background:rgba(255,79,110,.1);color:var(--rose)">n8n</span></li>
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Write Python FFmpeg assembler: stitch clips + audio + captions + 9:16 crop</div><span class="task-tag" style="background:rgba(56,217,245,.1);color:var(--sky)">DEV</span></li>
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Build n8n node: YouTube uploader → title + desc + tags + thumbnail auto-set</div><span class="task-tag" style="background:rgba(255,184,48,.1);color:var(--amber)">n8n</span></li>
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Build n8n node: TikTok uploader → auto-post with caption + hashtags</div><span class="task-tag" style="background:rgba(255,184,48,.1);color:var(--amber)">n8n</span></li>
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Set up error handling + Telegram bot alerts for pipeline failures</div><span class="task-tag" style="background:rgba(56,217,245,.1);color:var(--sky)">INFRA</span></li>
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Run full pipeline 24h test → produce 10 videos unattended → review quality</div><span class="task-tag" style="background:rgba(200,241,53,.1);color:var(--lime)">TEST</span></li>
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Apply for YouTube Partner Program (need 1K subs + 4K watch hours or 10M Shorts views)</div><span class="task-tag" style="background:rgba(255,184,48,.1);color:var(--amber)">MONO</span></li>
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Sign up for Impact.com or ShareASale → get first affiliate links for niche</div><span class="task-tag" style="background:rgba(200,241,53,.1);color:var(--lime)">MONO</span></li>
+      </ul>
+    </div>
+
+    <!-- PHASE 3 -->
+    <div class="task-phase-block">
+      <div class="tpb-head">
+        <div class="tpb-title" style="color:var(--violet)">PHASE 3 — Scale</div>
+        <div class="tpb-week">Weeks 6–9</div>
+      </div>
+      <ul class="task-list" id="phase3">
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Launch 2nd and 3rd niche channels → clone pipeline config with new voice/topic filter</div><span class="task-tag" style="background:rgba(168,85,247,.1);color:var(--violet)">SCALE</span></li>
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Build A/B hook test system: 2 variants per video → track retention → auto-promote winner</div><span class="task-tag" style="background:rgba(200,241,53,.1);color:var(--lime)">DEV</span></li>
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Build analytics feedback loop: pull YouTube/TikTok stats → rescore topic weights</div><span class="task-tag" style="background:rgba(56,217,245,.1);color:var(--sky)">DEV</span></li>
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Set up Pexels API integration → 40% stock footage mix in assembler to cut costs</div><span class="task-tag" style="background:rgba(255,184,48,.1);color:var(--amber)">COST</span></li>
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Auto-inject affiliate links into video descriptions based on niche topic</div><span class="task-tag" style="background:rgba(200,241,53,.1);color:var(--lime)">MONO</span></li>
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Build FLUX thumbnail generator → 3 variants per video → A/B test CTR on YouTube</div><span class="task-tag" style="background:rgba(255,79,110,.1);color:var(--rose)">DEV</span></li>
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Add Instagram Reels publisher via Graph API → expand reach to 3rd platform</div><span class="task-tag" style="background:rgba(255,184,48,.1);color:var(--amber)">n8n</span></li>
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Scale to 10 videos/day minimum → monitor quality threshold → tune prompt templates</div><span class="task-tag" style="background:rgba(168,85,247,.1);color:var(--violet)">SCALE</span></li>
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Create Beehiiv newsletter → add CTA to video descriptions to capture email subscribers</div><span class="task-tag" style="background:rgba(200,241,53,.1);color:var(--lime)">MONO</span></li>
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Build daily revenue tracking dashboard in Google Sheets or Supabase</div><span class="task-tag" style="background:rgba(56,217,245,.1);color:var(--sky)">TRACK</span></li>
+      </ul>
+    </div>
+
+    <!-- PHASE 4 -->
+    <div class="task-phase-block">
+      <div class="tpb-head">
+        <div class="tpb-title" style="color:var(--lime)">PHASE 4 — Monetize</div>
+        <div class="tpb-week">Weeks 10–12</div>
+      </div>
+      <ul class="task-list" id="phase4">
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Launch first digital product (PDF guide/cheat sheet) on Gumroad → promote in CTAs</div><span class="task-tag" style="background:rgba(200,241,53,.1);color:var(--lime)">MONO</span></li>
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Reach out to 10 brands in your niche for sponsorships → pitch media kit + stats</div><span class="task-tag" style="background:rgba(255,184,48,.1);color:var(--amber)">MONO</span></li>
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Build Claude prompt to auto-write sponsor mention scripts (5s embedded mid-video)</div><span class="task-tag" style="background:rgba(168,85,247,.1);color:var(--violet)">DEV</span></li>
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Launch 4th–6th niche channels → bring total to 6 pipelines running simultaneously</div><span class="task-tag" style="background:rgba(168,85,247,.1);color:var(--violet)">SCALE</span></li>
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Optimize best-performing scripts — double down on top 20% of topics by revenue</div><span class="task-tag" style="background:rgba(200,241,53,.1);color:var(--lime)">OPT</span></li>
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Add Facebook Reels publisher → 4th distribution platform</div><span class="task-tag" style="background:rgba(255,184,48,.1);color:var(--amber)">n8n</span></li>
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Set up YouTube channel memberships when eligible (1K+ subscribers)</div><span class="task-tag" style="background:rgba(200,241,53,.1);color:var(--lime)">MONO</span></li>
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Build email welcome sequence in Beehiiv → 5-email nurture → affiliate offer</div><span class="task-tag" style="background:rgba(56,217,245,.1);color:var(--sky)">MONO</span></li>
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Review + optimize pipeline: remove underperforming niches, double budget on winners</div><span class="task-tag" style="background:rgba(200,241,53,.1);color:var(--lime)">OPT</span></li>
+        <li class="task-item" onclick="toggle(this)"><div class="task-check"></div><div class="task-text">Document full pipeline → optionally sell as a course or template for extra revenue</div><span class="task-tag" style="background:rgba(255,184,48,.1);color:var(--amber)">BONUS</span></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ══ n8n WORKFLOW ══ -->
+<div class="section">
+  <div class="section-head">
+    <div style="display:flex;align-items:flex-end;gap:12px">
+      <div class="section-num">04</div>
+      <div class="section-title">n8n WORKFLOW DESIGN</div>
+    </div>
+    <div class="section-tag">AUTOMATION BACKBONE</div>
+  </div>
+
+  <div class="workflow-nodes">
+    <div class="wf-node trigger"><div class="wf-icon">⏰</div><div class="wf-name">Cron trigger</div><div class="wf-tool">Every 2 hours</div></div>
+    <div class="wf-arrow">→</div>
+    <div class="wf-node"><div class="wf-icon">📡</div><div class="wf-name">Trend scraper</div><div class="wf-tool">Google + Reddit</div></div>
+    <div class="wf-arrow">→</div>
+    <div class="wf-node"><div class="wf-icon">🎯</div><div class="wf-name">Virality scorer</div><div class="wf-tool">Claude Haiku</div></div>
+    <div class="wf-arrow">→</div>
+    <div class="wf-node"><div class="wf-icon">📝</div><div class="wf-name">Script writer</div><div class="wf-tool">Claude API</div></div>
+    <div class="wf-arrow">→</div>
+    <div class="wf-node"><div class="wf-icon">🎙️</div><div class="wf-name">Voice router</div><div class="wf-tool">EL / Kokoro</div></div>
+    <div class="wf-arrow">→</div>
+    <div class="wf-node"><div class="wf-icon">🎬</div><div class="wf-name">Video gen</div><div class="wf-tool">fal.ai API</div></div>
+    <div class="wf-arrow">→</div>
+    <div class="wf-node"><div class="wf-icon">✂️</div><div class="wf-name">Assembler</div><div class="wf-tool">FFmpeg / Python</div></div>
+    <div class="wf-arrow">→</div>
+    <div class="wf-node"><div class="wf-icon">🖼️</div><div class="wf-name">Thumbnail</div><div class="wf-tool">FLUX 1.1</div></div>
+    <div class="wf-arrow">→</div>
+    <div class="wf-node output"><div class="wf-icon">🚀</div><div class="wf-name">Publisher</div><div class="wf-tool">YT + TT + IG</div></div>
+    <div class="wf-arrow">→</div>
+    <div class="wf-node output"><div class="wf-icon">📊</div><div class="wf-name">Analytics</div><div class="wf-tool">Feedback loop</div></div>
+  </div>
+
+  <div class="info"><strong>Self-healing:</strong> Every n8n node has a retry handler (3× with exponential backoff) and writes errors to Supabase. A Telegram bot pings you if any stage fails 3 times in a row. The pipeline recovers automatically from API timeouts, rate limits, and transient failures.</div>
+
+  <div class="code-section">
+    <div class="code-label">Claude scriptwriting prompt template</div>
+    <div class="code-block"><span class="c"># system prompt for Claude Haiku — script generator</span>
+
+<span class="k">SYSTEM</span> = <span class="s">"""
+You are a viral short video scriptwriter. Output ONLY valid JSON, no markdown.
+
+Rules:
+- Hook must stop scroll in first 2 seconds — use pattern interrupt or open loop
+- Build section delivers value fast — one insight per 5 seconds
+- CTA triggers comments or saves — never say "like and subscribe"
+- Tone: conversational, direct, slightly urgent
+- Platform: {platform} | Length: {duration}s | Niche: {niche}
+
+Output format:
+{
+  "hook": "first 2-3 seconds exactly",
+  "build": ["scene 1 text", "scene 2 text", ...],
+  "cta": "final 3 seconds",
+  "title": "YouTube/TikTok title with keyword",
+  "description": "150 word SEO description with affiliate placeholder",
+  "hashtags": ["#tag1", "#tag2", ...],
+  "thumbnail_prompt": "FLUX image generation prompt for thumbnail"
+}
+"""</span>
+
+<span class="k">USER</span> = <span class="s">f"Topic: {topic}\nVirality score: {score}\nHook type: {hook_type}"</span>
+
+response = anthropic.messages.create(
+    model=<span class="s">"claude-haiku-3-5-20241022"</span>,
+    max_tokens=<span class="v">800</span>,
+    system=SYSTEM,
+    messages=[{<span class="s">"role"</span>: <span class="s">"user"</span>, <span class="s">"content"</span>: USER}]
+)
+
+script = json.loads(response.content[<span class="v">0</span>].text)</div>
+  </div>
+
+  <div class="code-section">
+    <div class="code-label">FFmpeg assembly command (Python)</div>
+    <div class="code-block"><span class="c"># assemble_video.py — stitch clips + audio + captions</span>
+
+<span class="k">import</span> subprocess, json
+
+<span class="k">def</span> <span class="n">assemble_video</span>(clips, audio_path, captions, output_path):
+    <span class="c"># 1. Create concat file for FFmpeg</span>
+    concat = <span class="s">"\n"</span>.join([<span class="s">f"file '{c}'"</span> <span class="k">for</span> c <span class="k">in</span> clips])
+    <span class="k">with</span> open(<span class="s">"/tmp/concat.txt"</span>, <span class="s">"w"</span>) <span class="k">as</span> f: f.write(concat)
+
+    <span class="c"># 2. Stitch clips + mix audio + add captions + resize to 9:16</span>
+    cmd = [
+        <span class="s">"ffmpeg"</span>, <span class="s">"-f"</span>, <span class="s">"concat"</span>, <span class="s">"-safe"</span>, <span class="s">"0"</span>,
+        <span class="s">"-i"</span>, <span class="s">"/tmp/concat.txt"</span>,
+        <span class="s">"-i"</span>, audio_path,
+        <span class="s">"-vf"</span>, <span class="s">f"scale=1080:1920:force_original_aspect_ratio=increase,"</span>
+               <span class="s">f"crop=1080:1920,subtitles={captions}:force_style='FontSize=18,"</span>
+               <span class="s">f"PrimaryColour=&H00FFFF00,Bold=1,MarginV=80'"</span>,
+        <span class="s">"-c:v"</span>, <span class="s">"libx264"</span>, <span class="s">"-preset"</span>, <span class="s">"fast"</span>, <span class="s">"-crf"</span>, <span class="s">"23"</span>,
+        <span class="s">"-c:a"</span>, <span class="s">"aac"</span>, <span class="s">"-b:a"</span>, <span class="s">"192k"</span>,
+        <span class="s">"-shortest"</span>, <span class="s">"-y"</span>, output_path
+    ]
+    subprocess.run(cmd, check=<span class="k">True</span>)
+    <span class="k">return</span> output_path</div>
+  </div>
+</div>
+
+<!-- ══ API SETUP GUIDE ══ -->
+<div class="section">
+  <div class="section-head">
+    <div style="display:flex;align-items:flex-end;gap:12px">
+      <div class="section-num">05</div>
+      <div class="section-title">API SETUP GUIDE</div>
+    </div>
+    <div class="section-tag">GET KEYS IN CORRECT ORDER</div>
+  </div>
+
+  <div class="api-grid">
+    <div class="api-card">
+      <div class="api-num">1</div>
+      <div class="api-content">
+        <div class="api-name">Anthropic (Claude)</div>
+        <div class="api-url">console.anthropic.com</div>
+        <div class="api-steps">
+          <div class="api-step">Sign up → go to API Keys → create key</div>
+          <div class="api-step">Add to .env: ANTHROPIC_API_KEY=sk-ant-...</div>
+          <div class="api-step">Enable Haiku model (cheapest for scripts)</div>
+          <div class="api-step">Set spend limit: $20/mo to start safely</div>
+        </div>
+        <div class="api-cost">~$4–15/mo at production volume</div>
+      </div>
+    </div>
+    <div class="api-card">
+      <div class="api-num">2</div>
+      <div class="api-content">
+        <div class="api-name">fal.ai (video + images + TTS)</div>
+        <div class="api-url">fal.ai/dashboard</div>
+        <div class="api-steps">
+          <div class="api-step">Sign up → Settings → API Keys → generate</div>
+          <div class="api-step">Add to .env: FAL_KEY=your-key-here</div>
+          <div class="api-step">Test: fal-client for Python or JS SDK</div>
+          <div class="api-step">Enable: kling-video/v1.6/pro, wan/v2.1, flux-pro/v1.1, kokoro</div>
+        </div>
+        <div class="api-cost">~$80–200/mo (biggest cost — use stock footage mix)</div>
+      </div>
+    </div>
+    <div class="api-card">
+      <div class="api-num">3</div>
+      <div class="api-content">
+        <div class="api-name">ElevenLabs (hero voice)</div>
+        <div class="api-url">elevenlabs.io/app/settings/api-keys</div>
+        <div class="api-steps">
+          <div class="api-step">Sign up → go to Profile → API key</div>
+          <div class="api-step">Add to .env: ELEVEN_API_KEY=your-key</div>
+          <div class="api-step">Clone voice: upload 3min clear audio sample</div>
+          <div class="api-step">Note voice_id for each channel's persona</div>
+        </div>
+        <div class="api-cost">~$30–80/mo — use Kokoro for 80% of videos</div>
+      </div>
+    </div>
+    <div class="api-card">
+      <div class="api-num">4</div>
+      <div class="api-content">
+        <div class="api-name">YouTube Data API v3</div>
+        <div class="api-url">console.cloud.google.com</div>
+        <div class="api-steps">
+          <div class="api-step">New project → Enable YouTube Data API v3</div>
+          <div class="api-step">OAuth 2.0 credentials → Desktop app</div>
+          <div class="api-step">Download credentials.json → run auth flow once</div>
+          <div class="api-step">Store token.json for headless re-auth</div>
+        </div>
+        <div class="api-cost">Free — 10,000 units/day quota (upload = 1600 units)</div>
+      </div>
+    </div>
+    <div class="api-card">
+      <div class="api-num">5</div>
+      <div class="api-content">
+        <div class="api-name">TikTok Content Posting API</div>
+        <div class="api-url">developers.tiktok.com</div>
+        <div class="api-steps">
+          <div class="api-step">Apply for Content Posting API (approval 1–7 days)</div>
+          <div class="api-step">Create app → get client_key + client_secret</div>
+          <div class="api-step">OAuth flow → get access_token per account</div>
+          <div class="api-step">Use Publer.io as fallback while waiting for approval</div>
+        </div>
+        <div class="api-cost">Free API — Publer fallback $15/mo</div>
+      </div>
+    </div>
+    <div class="api-card">
+      <div class="api-num">6</div>
+      <div class="api-content">
+        <div class="api-name">Pexels API (free stock footage)</div>
+        <div class="api-url">pexels.com/api</div>
+        <div class="api-steps">
+          <div class="api-step">Create account → request API access (instant)</div>
+          <div class="api-step">Add to .env: PEXELS_API_KEY=your-key</div>
+          <div class="api-step">Search videos by scene keyword from script</div>
+          <div class="api-step">Download HD clips → use for 40% of footage</div>
+        </div>
+        <div class="api-cost">Free — 200 requests/hour limit</div>
+      </div>
+    </div>
+    <div class="api-card">
+      <div class="api-num">7</div>
+      <div class="api-content">
+        <div class="api-name">Supabase (database)</div>
+        <div class="api-url">supabase.com/dashboard</div>
+        <div class="api-steps">
+          <div class="api-step">New project → copy URL + anon key</div>
+          <div class="api-step">Create tables: topics, scripts, videos, analytics</div>
+          <div class="api-step">Enable Row Level Security for safety</div>
+          <div class="api-step">Use Python supabase-py or JS client in n8n</div>
+        </div>
+        <div class="api-cost">Free tier: 500MB, 50K rows — sufficient to start</div>
+      </div>
+    </div>
+    <div class="api-card">
+      <div class="api-num">8</div>
+      <div class="api-content">
+        <div class="api-name">Instagram Graph API</div>
+        <div class="api-url">developers.facebook.com</div>
+        <div class="api-steps">
+          <div class="api-step">Meta developer account → new app → Instagram Basic Display</div>
+          <div class="api-step">Switch to Professional (Creator or Business) account</div>
+          <div class="api-step">Connect Facebook Page → get long-lived access token</div>
+          <div class="api-step">Use Container + Publish endpoint for Reels</div>
+        </div>
+        <div class="api-cost">Free — 200 API calls/hour per user</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="warn"><strong>TikTok API approval takes 1–7 business days.</strong> Apply on day 1 of week 1. Use Publer.io ($15/mo) as your fallback publisher while you wait — it supports TikTok, YouTube, and Instagram from one dashboard and can be automated via Zapier.</div>
+</div>
+
+<!-- ══ MONETIZATION TIMELINE ══ -->
+<div class="section">
+  <div class="section-head">
+    <div style="display:flex;align-items:flex-end;gap:12px">
+      <div class="section-num">06</div>
+      <div class="section-title">MONETIZATION TIMELINE</div>
+    </div>
+    <div class="section-tag">WHEN MONEY STARTS COMING IN</div>
+  </div>
+
+  <div class="mono-timeline">
+    <div class="mono-month">
+      <div class="mm-label">M1</div>
+      <div class="mm-content">
+        <div class="mm-title">Month 1 — Build & seed</div>
+        <div class="mm-actions">
+          <span class="mm-action key">Pipeline live</span>
+          <span class="mm-action">1–2 channels</span>
+          <span class="mm-action">3–5 videos/day</span>
+          <span class="mm-action">Affiliate links live</span>
+        </div>
+        <div class="mm-desc">Focus is volume and quality tuning. Affiliate clicks start but conversion is low. YouTube Partner application filed. Pipeline costs ~$80–120/mo.</div>
+      </div>
+      <div class="mm-rev">
+        <div class="mm-rev-val">$50–200</div>
+        <div class="mm-rev-sub">affiliates only</div>
+        <div class="mm-rev-sources">
+          <div class="mm-src">Affiliates <span>$50–200</span></div>
+          <div class="mm-src">Ads <span>$0 (not eligible)</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="mono-month">
+      <div class="mm-label">M2</div>
+      <div class="mm-content">
+        <div class="mm-title">Month 2 — Grow & optimize</div>
+        <div class="mm-actions">
+          <span class="mm-action">3 channels</span>
+          <span class="mm-action">8–10 videos/day</span>
+          <span class="mm-action key">YPP eligible</span>
+          <span class="mm-action">A/B tests running</span>
+        </div>
+        <div class="mm-desc">YouTube Partner Program approved (Finance channel likely hits 10M Shorts views fast). Ad revenue begins. A/B hook tests start improving retention.</div>
+      </div>
+      <div class="mm-rev">
+        <div class="mm-rev-val">$300–800</div>
+        <div class="mm-rev-sub">ads + affiliates</div>
+        <div class="mm-rev-sources">
+          <div class="mm-src">Ads <span>$150–400</span></div>
+          <div class="mm-src">Affiliates <span>$150–400</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="mono-month">
+      <div class="mm-label">M3</div>
+      <div class="mm-content">
+        <div class="mm-title">Month 3 — Compound growth</div>
+        <div class="mm-actions">
+          <span class="mm-action">5 channels</span>
+          <span class="mm-action">12–15 videos/day</span>
+          <span class="mm-action key">First sponsor</span>
+          <span class="mm-action">Email list growing</span>
+        </div>
+        <div class="mm-desc">Pipeline is fully autonomous. First sponsorship deal at $200–400/video. Email list hits 500–2K subscribers. Finance channel approaching monetization thresholds.</div>
+      </div>
+      <div class="mm-rev">
+        <div class="mm-rev-val">$1,500–4K</div>
+        <div class="mm-rev-sub">3 revenue streams</div>
+        <div class="mm-rev-sources">
+          <div class="mm-src">Ads <span>$600–1,500</span></div>
+          <div class="mm-src">Affiliates <span>$500–1,200</span></div>
+          <div class="mm-src">Sponsors <span>$400–1,200</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="mono-month">
+      <div class="mm-label">M6</div>
+      <div class="mm-content">
+        <div class="mm-title">Month 6 — Full system running</div>
+        <div class="mm-actions">
+          <span class="mm-action key">6 channels</span>
+          <span class="mm-action key">15–20 videos/day</span>
+          <span class="mm-action key">Digital products</span>
+          <span class="mm-action">3K+ email subs</span>
+        </div>
+        <div class="mm-desc">Pipeline fully compound — analytics feedback loop makes every week better than the last. Digital products (PDF guides, templates) added for 90% margin revenue. Email list generates passive affiliate sales.</div>
+      </div>
+      <div class="mm-rev">
+        <div class="mm-rev-val highlight">$8K–15K</div>
+        <div class="mm-rev-sub">all streams active</div>
+        <div class="mm-rev-sources">
+          <div class="mm-src">Ads <span>$3,000–5,000</span></div>
+          <div class="mm-src">Affiliates <span>$2,000–4,000</span></div>
+          <div class="mm-src">Sponsors <span>$1,500–3,000</span></div>
+          <div class="mm-src">Products <span>$500–2,000</span></div>
+          <div class="mm-src">Email <span>$500–1,000</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="mono-month">
+      <div class="mm-label">M12</div>
+      <div class="mm-content">
+        <div class="mm-title">Month 12 — Scale or sell</div>
+        <div class="mm-actions">
+          <span class="mm-action key">10+ channels</span>
+          <span class="mm-action">30+ videos/day</span>
+          <span class="mm-action key">Hire VA for outreach</span>
+          <span class="mm-action">10K+ email subs</span>
+        </div>
+        <div class="mm-desc">At this scale, the pipeline is a media company. Options: keep running for income, hire a VA for sponsor outreach, or sell the operation (channel portfolios sell for 24–36× monthly revenue).</div>
+      </div>
+      <div class="mm-rev">
+        <div class="mm-rev-val highlight">$20K–40K</div>
+        <div class="mm-rev-sub">or sell for $600K+</div>
+        <div class="mm-rev-sources">
+          <div class="mm-src">All streams <span>compounding</span></div>
+          <div class="mm-src">Exit value <span>$480K–1.2M</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ COST TABLE ══ -->
+<div class="section">
+  <div class="section-head">
+    <div style="display:flex;align-items:flex-end;gap:12px">
+      <div class="section-num">07</div>
+      <div class="section-title">STARTUP BUDGET</div>
+    </div>
+    <div class="section-tag">MONTH 1 COSTS</div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div>
+      <table class="cost-tbl">
+        <thead><tr><th>Service</th><th>Plan</th><th>Cost/mo</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>Hetzner VPS</td><td class="mono">CX21</td><td class="mono" style="color:var(--amber)">€5</td><td style="color:var(--dim)">Runs n8n + FFmpeg</td></tr>
+          <tr><td>Anthropic API</td><td class="mono">Pay per use</td><td class="mono" style="color:var(--amber)">$4–15</td><td style="color:var(--dim)">Set $20 spend cap</td></tr>
+          <tr><td>fal.ai</td><td class="mono">Pay per use</td><td class="mono" style="color:var(--amber)">$40–80</td><td style="color:var(--dim)">With 40% stock mix</td></tr>
+          <tr><td>ElevenLabs</td><td class="mono">Starter $5</td><td class="mono" style="color:var(--amber)">$5–22</td><td style="color:var(--dim)">Use Kokoro for bulk</td></tr>
+          <tr><td>Supabase</td><td class="mono">Free</td><td class="mono" style="color:var(--lime)">$0</td><td style="color:var(--dim)">Free tier sufficient</td></tr>
+          <tr><td>Pexels API</td><td class="mono">Free</td><td class="mono" style="color:var(--lime)">$0</td><td style="color:var(--dim)">Free stock footage</td></tr>
+          <tr><td>n8n</td><td class="mono">Self-hosted</td><td class="mono" style="color:var(--lime)">$0</td><td style="color:var(--dim)">Docker on VPS</td></tr>
+          <tr><td>Publer</td><td class="mono">Starter</td><td class="mono" style="color:var(--amber)">$15</td><td style="color:var(--dim)">TikTok + IG fallback</td></tr>
+          <tr><td>Domain + SSL</td><td class="mono">Yearly</td><td class="mono" style="color:var(--amber)">$1</td><td style="color:var(--dim)">Namecheap + Certbot</td></tr>
+          <tr class="highlight-row"><td>Total month 1</td><td></td><td class="mono">~$70–140</td><td style="color:var(--lime)">Under $500 startup</td></tr>
+        </tbody>
+      </table>
+      <div class="tip" style="margin-top:12px"><strong>Start lean:</strong> In week 1–2, you only need VPS + Anthropic + fal.ai to produce test videos. Add ElevenLabs, Publer, and Supabase in week 3 when the pipeline is working. Total day-1 spend can be under $20.</div>
+    </div>
+    <div>
+      <div style="background:var(--ink2);border:1px solid var(--rule);border-radius:4px;padding:18px">
+        <div style="font-family:var(--ff-head);font-size:20px;color:var(--bright);margin-bottom:14px">ROI calculation</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--ink3);border-radius:3px">
+            <span style="font-size:12px;color:var(--body)">Cost per video (hybrid)</span>
+            <span style="font-family:var(--ff-mono);color:var(--rose)">$0.55</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--ink3);border-radius:3px">
+            <span style="font-size:12px;color:var(--body)">Revenue per video (avg Month 3)</span>
+            <span style="font-family:var(--ff-mono);color:var(--lime)">$13.00</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:rgba(200,241,53,.06);border:1px solid rgba(200,241,53,.2);border-radius:3px">
+            <span style="font-size:12px;font-weight:700;color:var(--bright)">ROI per video</span>
+            <span style="font-family:var(--ff-head);font-size:22px;color:var(--lime)">23.6×</span>
+          </div>
+          <div style="height:1px;background:var(--rule);margin:4px 0"></div>
+          <div style="display:flex;justify-content:space-between;padding:8px 12px"><span style="font-size:12px;color:var(--dim)">10 videos/day × 30 days</span><span style="font-family:var(--ff-mono);color:var(--muted)">300 videos/mo</span></div>
+          <div style="display:flex;justify-content:space-between;padding:8px 12px"><span style="font-size:12px;color:var(--dim)">Production cost</span><span style="font-family:var(--ff-mono);color:var(--rose)">$165/mo</span></div>
+          <div style="display:flex;justify-content:space-between;padding:8px 12px"><span style="font-size:12px;color:var(--dim)">Revenue (Month 3+)</span><span style="font-family:var(--ff-mono);color:var(--lime)">$3,900/mo</span></div>
+          <div style="display:flex;justify-content:space-between;padding:10px 12px;background:rgba(200,241,53,.06);border-radius:3px">
+            <span style="font-size:12px;font-weight:700;color:var(--bright)">Net profit</span>
+            <span style="font-family:var(--ff-head);font-size:20px;color:var(--lime)">$3,735/mo</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ QUICK WINS ══ -->
+<div class="section">
+  <div class="section-head">
+    <div style="display:flex;align-items:flex-end;gap:12px">
+      <div class="section-num">08</div>
+      <div class="section-title">KEY RISKS & HOW TO BEAT THEM</div>
+    </div>
+    <div class="section-tag">KNOW BEFORE YOU BUILD</div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div class="warn"><strong>Risk: Low video quality at start.</strong> Your first 20–50 videos will be rough. This is normal. Ship anyway — early videos get fewer views and give you time to tune prompts before the algorithm finds you.</div>
+    <div class="tip"><strong>Fix: Tight feedback loop.</strong> Review every video's 48h retention curve. If below 40%, identify which second viewers dropped — then fix that section of the script template. One tweak per week compounds fast.</div>
+    <div class="warn"><strong>Risk: TikTok API rejection.</strong> TikTok is strict with API access. Apply early but have Publer ready as immediate fallback. Manual posting for the first 2 weeks is fine — you only have 3–5 videos/day at that stage.</div>
+    <div class="tip"><strong>Fix: Publer + schedule block.</strong> Publer.io ($15/mo) supports TikTok, Instagram, and YouTube scheduling. Build automation to push video + metadata to Publer via API — nearly as good as direct posting.</div>
+    <div class="warn"><strong>Risk: fal.ai costs spiral.</strong> Video generation is the biggest cost. Without controls, 20 videos/day can hit $400+/mo on Kling alone.</div>
+    <div class="tip"><strong>Fix: Hard cost cap in n8n.</strong> Add a daily spend counter in Supabase. When fal.ai spend hits $8/day, switch all remaining jobs to WAN 2.1 + Pexels stock only. Never exceed $200/mo without confirmed revenue first.</div>
+    <div class="warn"><strong>Risk: All content feels samey / AI-detectable.</strong> If every video starts with "Most people don't know..." the algorithm and audience will tune out.</div>
+    <div class="tip"><strong>Fix: Hook rotation + persona variation.</strong> Keep a library of 20+ hook templates. Rotate by niche and time. A/B test weekly. Add occasional "human element" frames (sourced B-roll with real people) to break the AI-generated visual pattern.</div>
+  </div>
+</div>
+
+</div><!-- /page -->
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-left">VIRALFLOW IMPLEMENTATION PLAN v1.0</div>
+  <div class="footer-right">
+    Start: Week 1 — VPS + APIs<br>
+    First video: End of Week 2<br>
+    First $100: End of Month 2<br>
+    First $1,000: Month 3
+  </div>
+</div>
+
+<script>
+// ── TASK TRACKER ──
+function toggle(el){
+  el.classList.toggle('done');
+  updateProgress();
+}
+function updateProgress(){
+  const all=document.querySelectorAll('.task-item');
+  const done=document.querySelectorAll('.task-item.done');
+  const pct=Math.round(done.length/all.length*100);
+  document.getElementById('overall-pct').textContent=pct+'%';
+  document.getElementById('overall-bar').style.width=pct+'%';
+}
+updateProgress();
+</script>
+</body>
+</html>
