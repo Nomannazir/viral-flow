@@ -4,6 +4,7 @@ youtube_token.pickle
 *.pickle
 .env
 .env.*
+!.env.example
 
 # Virtual environment
 .venv/
