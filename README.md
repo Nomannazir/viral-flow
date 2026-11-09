@@ -2,6 +2,10 @@
 
 ViralFlow is a fully automated pipeline that discovers trending DIY topics, generates a step-by-step video storyboard with Claude AI, fetches real stock footage from Pexels, assembles a polished short-form video with bold text overlays, and uploads it to YouTube Shorts — all with one command.
 
+**▶ Live demo & sample videos: [viralflow.nomannazir.com](https://viralflow.nomannazir.com)**
+
+[![ViralFlow](https://viralflow.nomannazir.com/og.jpg)](https://viralflow.nomannazir.com)
+
 ```
 Trending topic → Claude storyboard → FLUX before/after images
      → Pexels stock clips → FFmpeg assembly → YouTube upload
